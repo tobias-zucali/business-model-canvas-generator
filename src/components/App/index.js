@@ -1,37 +1,25 @@
 import React, { useState } from 'react';
-import Editor from '../Editor'
-import { Value } from 'slate'
+import Editor, { createEditorStateFromMarkdown, getMarkdownFromEditorState } from '../Editor'
 
-// import initialValue from './default.md'
-const initialValue = Value.fromJSON({
-  document: {
-    nodes: [
-      {
-        object: 'block',
-        type: 'paragraph',
-        nodes: [
-          {
-            object: 'text',
-            leaves: [
-              {
-                text: 'A line of text in a paragraph.',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+import once from 'lodash/once'
+
+
+const getDefaultEditorState = once(() => {
+  const defaultValue = `# hey!
+das ist doch was!`
+
+  return createEditorStateFromMarkdown(defaultValue)
 })
 
-
 function App() {
-  const [value, setValue] = useState(initialValue)
+  const [editorState, setEditorState] = useState(getDefaultEditorState())
+
+  console.log(getMarkdownFromEditorState(editorState))
 
   return (
     <Editor
-      value={value}
-      onChange={setValue}
+      editorState={editorState}
+      onChange={setEditorState}
     />
   )
 }
