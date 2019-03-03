@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import Editor, { createEditorStateFromMarkdown, getMarkdownFromEditorState } from '../Editor'
-
+import React, { useState } from 'react'
 import once from 'lodash/once'
+import Editor, { createEditorStateFromMarkdown, getMarkdownFromEditorState } from '../Editor'
 
 
 const getDefaultEditorState = once(() => {
@@ -24,4 +23,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
