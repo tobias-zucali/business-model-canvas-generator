@@ -101,11 +101,11 @@ module.exports = ({
     'no-unexpected-multiline': 2,
     'react-hooks/rules-of-hooks': 2,
   },
-  // settings: {
-  //   'import/resolver': {
-  //     webpack: {
-  //       config: webpackConfig
-  //     }
-  //   }
-  // },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+      },
+    },
+  },
 })
