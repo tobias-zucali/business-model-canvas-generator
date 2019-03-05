@@ -7,7 +7,7 @@ import isRegExp from 'lodash/isRegExp'
 import mergeWith from 'lodash/mergeWith'
 
 
-export function mergePlainObjects(first, second) {
+export function mergeObjects(first, second) {
   if (isPlainObject(first)) {
     return mergeWith(
       cloneDeep(first),
@@ -26,10 +26,10 @@ export function mergePlainObjects(first, second) {
   }
 }
 
-export function deepMergePlainObjects(first, second) {
-  const merged = mergePlainObjects(first, second)
+export function deepMergeObjects(first, second) {
+  const merged = mergeObjects(first, second)
   if (isPlainObject(merged)) {
-    return mapObject(merged, (key) => deepMergePlainObjects(
+    return mapObject(merged, (key) => deepMergeObjects(
       isPlainObject(first) ? first[key] : undefined,
       isPlainObject(second) ? second[key] : undefined
     ))

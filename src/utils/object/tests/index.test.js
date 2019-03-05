@@ -1,10 +1,10 @@
-import { mergePlainObjects, deepMergePlainObjects, mapObject, mapEverything } from '../index'
+import { mergeObjects, deepMergeObjects, mapObject, mapEverything } from '../index'
 
 
 describe('utils/object', () => {
-  describe('mergePlainObjects', () => {
+  describe('mergeObjects', () => {
     it('merges plain objects', () => {
-      expect(mergePlainObjects(
+      expect(mergeObjects(
         {
           iWillStay: true,
           iWillBeOverwritten: 'yes',
@@ -22,7 +22,7 @@ describe('utils/object', () => {
     })
 
     it('returns second argument if first is no object', () => {
-      expect(mergePlainObjects(
+      expect(mergeObjects(
         'I am no object',
         'I will be returned',
       )).toEqual(
@@ -31,7 +31,7 @@ describe('utils/object', () => {
     })
 
     it('returns first argument if second is undefined', () => {
-      expect(mergePlainObjects(
+      expect(mergeObjects(
         'I will be returned'
       )).toEqual(
         'I will be returned'
@@ -39,9 +39,9 @@ describe('utils/object', () => {
     })
   })
 
-  describe('deepMergePlainObjects', () => {
+  describe('deepMergeObjects', () => {
     it('deep merges plain objects', () => {
-      expect(deepMergePlainObjects(
+      expect(deepMergeObjects(
         {
           iWillStay: true,
           iWillBeMerged: {

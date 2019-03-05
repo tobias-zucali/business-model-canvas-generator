@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from 'react'
-import splitMarkdown from 'utils/splitMarkdown'
-import { mapObject, deepMergePlainObjects } from 'utils/object'
-import logger from 'utils/logger'
+import useMarkdownSync from 'hooks/useMarkdownSync'
 
-import cloneDeep from 'lodash/cloneDeep'
-import without from 'lodash/without'
+import memoize from 'lodash/memoize'
 
 import CanvasArea from 'components/CanvasArea'
 import styled from 'styled-components'
@@ -21,8 +18,9 @@ const GridContainer = styled.div`
     "cost-structure cost-structure cost-structure cost-structure cost-structure revenue-streams revenue-streams revenue-streams revenue-streams revenue-streams";
 `
 
-const defaultData = {
+const model = {
   header: 'Your Business',
+  localStorageKey: 'businessModelCanvas',
   props: {
     by: '',
     date: new Date().toLocaleDateString(),
@@ -83,52 +81,25 @@ const defaultData = {
   },
 }
 
-const SECTION_KEYS = Object.keys(defaultData.sections)
-
-const CanvasAreas = mapObject(defaultData.sections, (key) => styled(CanvasArea)`
-  grid-area: ${key};
-`)
-
-
-export function getInitialData() {
-  const storedDataString = localStorage.getItem('businessCanvasData')
-  if (storedDataString) {
-    try {
-      const storedData = splitMarkdown(storedDataString)
-      const storedSectionKeys = Object.keys(storedData.sections)
-      const invalidSectionKeys = without(storedSectionKeys, SECTION_KEYS)
-
-      if (invalidSectionKeys.length > 0) {
-        logger.warn('Unknown sections found:', invalidSectionKeys)
-      }
-
-      return deepMergePlainObjects(
-        defaultData,
-        storedData
-      )
-    } catch (error) {
-      logger.error('Reading stored canvas data failed')
-      logger.error(error)
-    }
-  }
-  return cloneDeep(defaultData)
+export function getCanvasArea(key) {
+  const SectionCanvasArea = styled(CanvasArea)`
+    grid-area: ${key};
+  `
+  return SectionCanvasArea
 }
 
+
 function BusinessModelCanvas() {
-  const [data, setData] = useState(
-    useMemo(getInitialData, [])
+  const {
+    mapSections,
+    updateSection,
+  } = useMarkdownSync({ model })
+
+
+  const memoizedGetCanvasArea = useMemo(
+    () => memoize(getCanvasArea),
+    []
   )
-  const setSectionContent = (sectionKey, content) => {
-    const nextData = deepMergePlainObjects(data, {
-      sections: {
-        [sectionKey]: {
-          content,
-        },
-      },
-    })
-    logger.log(nextData)
-    setData(nextData)
-  }
 
   const [editorStates, setEditorStates] = useState({})
   const setSectionEditorState = (sectionKey, editorState) => setEditorStates({
@@ -138,20 +109,20 @@ function BusinessModelCanvas() {
 
   return (
     <GridContainer>
-      {SECTION_KEYS.map((sectionKey) => {
-        const SectionCanvasArea = CanvasAreas[sectionKey]
+      {(mapSections(({ key, ...section }) => {
+        const SectionCanvasArea = memoizedGetCanvasArea(key)
         return (
           <SectionCanvasArea
-            editorState={editorStates[sectionKey]}
-            key={sectionKey}
+            editorState={editorStates[key]}
+            key={key}
             onChange={({ content, editorState }) => {
-              setSectionContent(sectionKey, content)
-              setSectionEditorState(sectionKey, editorState)
+              updateSection(key, { content })
+              setSectionEditorState(key, editorState)
             }}
-            {...data.sections[sectionKey]}
+            {...section}
           />
         )
-      })}
+      }))}
     </GridContainer>
   )
 }
