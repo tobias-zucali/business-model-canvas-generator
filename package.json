@@ -27,7 +27,8 @@
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:fix": "yarn lint:eslint:fix .",
     "lint": "yarn lint:eslint",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand"
   },
   "eslintConfig": {
     "extends": "react-app"
