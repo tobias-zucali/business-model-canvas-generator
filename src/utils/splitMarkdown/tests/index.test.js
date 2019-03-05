@@ -21,7 +21,7 @@ With multiline!!!
 [The collection of products and services a business offers to meet the needs of its customers.]
 `
 
-describe('splitMarkdown', () => {
+describe('utils/splitMarkdown', () => {
   it('splits markdown', () => {
     expect(
       splitMarkdown(testContent)
@@ -36,17 +36,17 @@ describe('splitMarkdown', () => {
         },
         sections: {
           'customer-segments': {
-            body: '',
+            content: '',
             header: 'Customer Segments',
             placeholder: 'To build an effective business model, a company must identify which customers it tries to serve.',
           },
           purpose: {
-            body: '### This is an initial text!\nWith multiline!!!',
+            content: '### This is an initial text!\nWith multiline!!!',
             header: 'Purpose',
             placeholder: 'Without a clear purpose, how will we know if a model is good or not?',
           },
           'value-propositions': {
-            body: '',
+            content: '',
             header: 'Value Propositions',
             placeholder: 'The collection of products and services a business offers to meet the needs of its customers.',
           },
@@ -189,7 +189,7 @@ relatively empty
 ## And another one {another}
 [with placeholder]
 
-Here is some body text!
+Here is some content text!
 
 And some more
 
@@ -202,12 +202,12 @@ __and so on__
             hey: {
               header: 'Hey there!',
               placeholder: '',
-              body: 'relatively empty',
+              content: 'relatively empty',
             },
             another: {
               header: 'And another one',
               placeholder: 'with placeholder',
-              body: `Here is some body text!
+              content: `Here is some content text!
 
 And some more
 

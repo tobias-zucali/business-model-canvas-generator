@@ -3,30 +3,19 @@ import PropTypes from 'prop-types'
 import { Editor as DraftJsEditor, EditorState, RichUtils } from 'draft-js'
 import { stateFromMarkdown } from 'draft-js-import-markdown'
 import { stateToMarkdown } from 'draft-js-export-markdown'
-import styled from 'styled-components'
+
+import memoize from 'lodash/memoize'
 
 import BlockStyleControls from './BlockStyleControls'
 import InlineStyleControls from './InlineStyleControls'
 
-
-const EditorWrapper = styled.div`
-  border: solid 1px;
-`
-export function createEditorStateFromMarkdown(md) {
-  const contentState = stateFromMarkdown(md)
-  return EditorState.createWithContent(contentState)
-}
-
-export function getMarkdownFromEditorState(editorState) {
-  return stateToMarkdown(
-    editorState.getCurrentContent()
-  )
-}
+import 'draft-js/dist/Draft.css'
 
 
 export function Editor({
   onChange,
   editorState,
+  ...otherProps
 }) {
   const editorRef = useRef(null)
 
@@ -65,7 +54,7 @@ export function Editor({
   }
 
   return (
-    <EditorWrapper>
+    <React.Fragment>
       <BlockStyleControls
         editorState={editorState}
         onToggle={toggleBlockType}
@@ -78,13 +67,14 @@ export function Editor({
         onClick={handleEditorClick}
       >
         <DraftJsEditor
+          {...otherProps}
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
           onChange={handleChange}
           ref={editorRef}
         />
       </div>
-    </EditorWrapper>
+    </React.Fragment>
   )
 }
 
@@ -92,5 +82,14 @@ Editor.propTypes = {
   editorState: PropTypes.object,
   onChange: PropTypes.func,
 }
+
+
+Editor.createEditorStateFromMarkdown = memoize((md) => EditorState.createWithContent(
+  stateFromMarkdown(md)
+))
+
+Editor.getMarkdownFromEditorState = (editorState) => stateToMarkdown(
+  editorState.getCurrentContent()
+)
 
 export default Editor

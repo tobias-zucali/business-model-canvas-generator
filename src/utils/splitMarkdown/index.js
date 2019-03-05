@@ -5,6 +5,7 @@ const propertyRegex = /^\s*(\S+)\s*:(.*)$/
 const sectionHeaderRegex = /^\s*##([^{]*){([^}]*)}(.*)$/
 const placeholderRegex = /\[(.*)\S*\]/
 
+
 export default function splitMarkdown(content) {
   const lines = content.split('\n')
 
@@ -93,18 +94,18 @@ export function findSections(lines, startIndex) {
       } = findPlaceholderText(lines, currentIndex + 1)
 
       currentIndex = placeholderIndex + 1 || currentIndex + 1
-      const body = []
+      const content = []
 
       while (currentIndex < lines.length && !(lines[currentIndex + 1] || '').match(sectionHeaderRegex)) {
         currentLine = lines[currentIndex]
-        body.push(currentLine)
+        content.push(currentLine)
         currentIndex += 1
       }
 
       sections[key.trim()] = {
         header,
         placeholder,
-        body: body.join('\n').trim(),
+        content: content.join('\n').trim(),
       }
     }
     currentIndex += 1
