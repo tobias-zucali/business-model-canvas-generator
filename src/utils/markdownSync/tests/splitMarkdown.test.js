@@ -64,10 +64,16 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['color: red', 'severity: hell'], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-            severity: 'hell',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+            {
+              key: 'severity',
+              value: 'hell',
+            },
+          ],
           lastIndex: 1,
         }
       )
@@ -78,10 +84,16 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['  color  :   red   ', '  severity:    hell   '], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-            severity: 'hell',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+            {
+              key: 'severity',
+              value: 'hell',
+            },
+          ],
           lastIndex: 1,
         }
       )
@@ -92,10 +104,16 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['', 'color: red', 'ignore me!', 'severity: hell', ''], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-            severity: 'hell',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+            {
+              key: 'severity',
+              value: 'hell',
+            },
+          ],
           lastIndex: 4,
         }
       )
@@ -106,9 +124,12 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['color: red', '# header', 'severity: hell'], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+          ],
           lastIndex: 0,
         }
       )
@@ -117,9 +138,12 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['color: red', '## header', 'severity: hell'], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+          ],
           lastIndex: 0,
         }
       )
@@ -128,9 +152,12 @@ describe('utils/markdownSync/splitMarkdown', () => {
         findProps(['color: red', '    ##    header #', 'severity: hell'], 0)
       ).toEqual(
         {
-          props: {
-            color: 'red',
-          },
+          props: [
+            {
+              key: 'color',
+              value: 'red',
+            },
+          ],
           lastIndex: 0,
         }
       )
@@ -155,13 +182,15 @@ __and so on__
 `.split('\n'), 0)
       ).toEqual(
         {
-          sections: {
-            hey: {
+          sections: [
+            {
+              key: 'hey',
               header: 'Hey there!',
               placeholder: '',
               content: 'relatively empty',
             },
-            another: {
+            {
+              key: 'another',
               header: 'And another one',
               placeholder: 'with placeholder',
               content: `Here is some content text!
@@ -171,7 +200,7 @@ And some more
 # with headings
 __and so on__`,
             },
-          },
+          ],
         }
       )
     })

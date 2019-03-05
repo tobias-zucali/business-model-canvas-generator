@@ -4,9 +4,11 @@ import { markdown, model } from './demoData'
 
 
 describe('utils/useMarkdownSync/modelToMarkdown', () => {
-  expect(
-    modelToMarkdown(model)
-  ).toEqual(
-    markdown
-  )
+  it('converts a model to markdown', () => {
+    expect(
+      modelToMarkdown(model)
+    ).toEqual(
+      markdown
+    )
+  })
 })

@@ -6,19 +6,19 @@ export default function modelToMarkdown(
   }
 ) {
   return `# ${header}
-${Object.keys(props).map((propKey) => `${propKey}:${props[propKey] ? ` ${props[propKey]}` : ''}`).join('\n')}
+${props.map(({
+    key,
+    value,
+  }) => `${key}:${value ? ` ${value}` : ''}`).join('\n')}
 
-${Object.keys(sections).map((sectionKey) => {
-    const {
-      header: sectionHeader,
-      placeholder,
-      content,
-    } = sections[sectionKey]
-
-    return `## ${sectionHeader} {${sectionKey}}${placeholder ? `
-[${placeholder}]` : ''}${content ? `}
+${sections.map(({
+    key,
+    header: sectionHeader,
+    placeholder,
+    content,
+  }) => `## ${sectionHeader} {${key}}${placeholder ? `
+[${placeholder}]` : ''}${content ? `
 ${content}` : ''}
-`
-  }).join('\n')}
+`).join('\n')}
 `
 }

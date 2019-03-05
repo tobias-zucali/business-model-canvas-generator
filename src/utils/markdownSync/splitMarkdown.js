@@ -54,7 +54,7 @@ export function findHeader(lines) {
 
 export function findProps(lines, startIndex) {
   let currentIndex = startIndex
-  const props = {}
+  const props = []
 
   while (currentIndex < lines.length) {
     const currentLine = lines[currentIndex]
@@ -62,7 +62,10 @@ export function findProps(lines, startIndex) {
 
     if (propertyMatch) {
       const [/* fullMatch */, key, value] = propertyMatch
-      props[key.trim()] = value.trim()
+      props.push({
+        key: key.trim(),
+        value: value.trim(),
+      })
     } else if (currentLine.match(anyHeaderRegex)) {
       break
     }
@@ -77,7 +80,7 @@ export function findProps(lines, startIndex) {
 
 export function findSections(lines, startIndex) {
   let currentIndex = startIndex
-  const sections = {}
+  const sections = []
 
   while (currentIndex < lines.length) {
     let currentLine = lines[currentIndex]
@@ -102,11 +105,12 @@ export function findSections(lines, startIndex) {
         currentIndex += 1
       }
 
-      sections[key.trim()] = {
+      sections.push({
+        key: key.trim(),
         header,
         placeholder,
         content: content.join('\n').trim(),
-      }
+      })
     }
     currentIndex += 1
   }

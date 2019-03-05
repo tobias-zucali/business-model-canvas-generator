@@ -21,64 +21,86 @@ const GridContainer = styled.div`
 const model = {
   header: 'Your Business',
   localStorageKey: 'businessModelCanvas',
-  props: {
-    by: '',
-    date: new Date().toLocaleDateString(),
-    for: '',
-    version: '1',
-  },
-  sections: {
-    purpose: {
+  props: [
+    {
+      key: 'by',
+      value: '',
+    },
+    {
+      key: 'date',
+      value: new Date().toLocaleDateString(),
+    },
+    {
+      key: 'for',
+      value: '',
+    },
+    {
+      key: 'version',
+      value: '1',
+    },
+  ],
+  sections: [
+    {
+      key: 'purpose',
       content: '',
       header: 'Purpose',
       placeholder: '1) Always validate the model with the business purpose.',
     },
-    'customer-segments': {
+    {
+      key: 'customer-segments',
       content: '',
       header: 'Customer Segments',
       placeholder: '2) To build an effective business model, a company must identify which customers it tries to serve.',
     },
-    'value-propositions': {
+    {
+      key: 'value-propositions',
       content: '',
       header: 'Value Propositions',
       placeholder: '3) The collection of products and services a business offers to meet the needs of its customers.',
     },
-    channels: {
+    {
+      key: 'channels',
       content: '',
       header: 'Channels',
       placeholder: '4) A company can deliver its value proposition to its targeted customers through different channels.',
     },
-    'customer-relationships': {
+    {
+      key: 'customer-relationships',
       content: '',
       header: 'Customer Relationships',
       placeholder: '5) To ensure the survival and success of any businesses, companies must identify the type of relationship they want to create with their customer segments.',
     },
-    'revenue-streams': {
+    {
+      key: 'revenue-streams',
       content: '',
       header: 'Revenue Streams',
       placeholder: '6) The way a company makes income from each customer segment.',
     },
-    'key-resources': {
+    {
+      key: 'key-resources',
       content: '',
       header: 'Key Resources',
       placeholder: '7) The resources that are necessary to create value for the customer.',
     },
-    'key-activities': {
+    {
+      key: 'key-activities',
       content: '',
       header: 'Key Activities',
       placeholder: '8) The most important activities in executing a company\'s value proposition.',
     },
-    'key-partners': {
+    {
+      key: 'key-partners',
       content: '',
       header: 'Key Partners',
       placeholder: '9) In order to optimize operations and reduce risks of a business model, organizations usually cultivate buyer-supplier relationships so they can focus on their core activity.',
     },
-    'cost-structure': {
+    {
+      key: 'cost-structure',
       content: '',
       header: 'Cost Structure',
       placeholder: '10) This describes the most important monetary consequences while operating under different business models.',
     },
-  },
+  ],
 }
 
 export function getCanvasArea(key) {

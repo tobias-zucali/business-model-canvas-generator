@@ -7,12 +7,14 @@ import without from 'lodash/without'
 import splitMarkdown from './splitMarkdown'
 
 
+const getSectionKeys = ({ sections }) => sections.map(({ key }) => key)
+
 export default function markdownToModel(defaultModel, markdown) {
   try {
     const model = splitMarkdown(markdown)
     const invalidSectionKeys = without(
-      Object.keys(model.sections),
-      ...Object.keys(defaultModel.sections)
+      getSectionKeys(model),
+      ...getSectionKeys(defaultModel)
     )
 
     if (invalidSectionKeys.length > 0) {
