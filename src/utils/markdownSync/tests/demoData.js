@@ -44,18 +44,21 @@ export const model = {
       content: '### This is an initial text!\nWith multiline!!!',
       header: 'Purpose',
       placeholder: 'Without a clear purpose, how will we know if a model is good or not?',
+      something: 'should be preserved',
     },
     {
       key: 'customer-segments',
       content: '',
       header: 'Customer Segments',
       placeholder: 'To build an effective business model, a company must identify which customers it tries to serve.',
+      something: 'should also be preserved',
     },
     {
       key: 'value-propositions',
       content: '',
       header: 'Value Propositions',
       placeholder: 'The collection of products and services a business offers to meet the needs of its customers.',
+      something: 'should be preserved',
     },
   ],
 }

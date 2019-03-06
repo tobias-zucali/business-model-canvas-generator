@@ -1,4 +1,5 @@
 
+import { mergeArraysByKey } from 'utils/array'
 import { deepMergeObjects } from 'utils/object'
 import logger from 'utils/logger'
 
@@ -12,11 +13,13 @@ const getSectionKeys = ({ sections }) => sections.map(({ key }) => key)
 export default function markdownToModel(defaultModel, markdown) {
   try {
     const model = splitMarkdown(markdown)
-    const invalidSectionKeys = without(
-      getSectionKeys(model),
-      ...getSectionKeys(defaultModel)
-    )
+    const modelSectionKeys = getSectionKeys(model)
+    const defaultModelSectionKeys = getSectionKeys(defaultModel)
 
+    const invalidSectionKeys = without(
+      modelSectionKeys,
+      ...defaultModelSectionKeys
+    )
     if (invalidSectionKeys.length > 0) {
       logger.warn('Unexpected sections found:', invalidSectionKeys)
       invalidSectionKeys.forEach((invalidSectionKey) => {
@@ -24,10 +27,18 @@ export default function markdownToModel(defaultModel, markdown) {
       })
     }
 
-    return deepMergeObjects(
-      defaultModel,
-      model
+    model.sections = mergeArraysByKey(
+      defaultModel.sections,
+      model.sections,
+      { key: 'key' }
     )
+
+    const mergedModel = deepMergeObjects(
+      defaultModel,
+      model,
+      { arrayKey: 'key' },
+    )
+    return mergedModel
   } catch (error) {
     logger.error('Parsing model failed')
     logger.error(error)

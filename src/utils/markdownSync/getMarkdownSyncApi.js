@@ -1,3 +1,4 @@
+import { getArrayObjectKeys } from 'utils/array'
 import isPlainObject from 'lodash/isPlainObject'
 import findIndex from 'lodash/findIndex'
 
@@ -16,7 +17,7 @@ export default function getMarkdownSyncApi({
 
   const markdownSyncApi = {
     get SECTION_KEYS() {
-      return model.sections.map(({ key }) => key)
+      return getArrayObjectKeys(model.sections, 'key')
     },
     get sections() {
       return currentModel.sections
@@ -55,7 +56,7 @@ export default function getMarkdownSyncApi({
     },
 
     get PROP_KEYS() {
-      return model.props.map(({ key }) => key)
+      return getArrayObjectKeys(model.props, 'key')
     },
     get props() {
       return currentModel.props

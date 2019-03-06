@@ -1,6 +1,6 @@
 import splitMarkdown, { findHeader, findProps, findSections, findPlaceholderText } from '../splitMarkdown'
 
-import { markdown, model } from './demoData'
+import { markdown } from './demoData'
 
 
 describe('utils/markdownSync/splitMarkdown', () => {
@@ -8,7 +8,45 @@ describe('utils/markdownSync/splitMarkdown', () => {
     expect(
       splitMarkdown(markdown)
     ).toEqual(
-      model
+      {
+        header: 'Your Business',
+        props: [
+          {
+            key: 'date',
+            value: '2012-12-12',
+          },
+          {
+            key: 'version',
+            value: '0.3',
+          },
+          {
+            key: 'by',
+            value: 'My beloved ones',
+          },
+          {
+            key: 'for',
+            value: '',
+          }],
+
+        sections: [
+          {
+            content: '### This is an initial text!\nWith multiline!!!',
+            header: 'Purpose',
+            key: 'purpose',
+            placeholder: 'Without a clear purpose, how will we know if a model is good or not?',
+          }, {
+            content: '',
+            header: 'Customer Segments',
+            key: 'customer-segments',
+            placeholder: 'To build an effective business model, a company must identify which customers it tries to serve.',
+          }, {
+            content: '',
+            header: 'Value Propositions',
+            key: 'value-propositions',
+            placeholder: 'The collection of products and services a business offers to meet the needs of its customers.',
+          },
+        ],
+      }
     )
   })
 
