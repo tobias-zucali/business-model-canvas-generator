@@ -113,7 +113,7 @@ export function getCanvasArea(key) {
 
 function BusinessModelCanvas() {
   const {
-    mapSections,
+    sections,
     updateSection,
   } = useMarkdownSync({ model })
 
@@ -131,7 +131,7 @@ function BusinessModelCanvas() {
 
   return (
     <GridContainer>
-      {(mapSections(({ key, ...section }) => {
+      {(sections.map(({ key, ...section }) => {
         const SectionCanvasArea = memoizedGetCanvasArea(key)
         return (
           <SectionCanvasArea

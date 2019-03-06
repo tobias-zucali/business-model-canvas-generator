@@ -1,7 +1,7 @@
 
 export const markdown = `# Your Business
 date: 2012-12-12
-version: 1
+version: 0.3
 by: My beloved ones
 for:
 
@@ -27,7 +27,7 @@ export const model = {
     },
     {
       key: 'version',
-      value: '1',
+      value: '0.3',
     },
     {
       key: 'by',
