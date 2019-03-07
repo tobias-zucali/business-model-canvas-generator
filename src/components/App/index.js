@@ -7,6 +7,17 @@ import BusinessModelCanvas from 'components/BusinessModelCanvas'
 const GlobalStyle = createGlobalStyle`
   BODY {
     background-color: ${(props) => props.theme.pageBackground};
+    font-size: 13px;
+
+    @media (min-width: 1000px) {
+      font-size: 14px;
+    }
+    @media (min-width: 1600px) {
+      font-size: 16px;
+    }
+    @media (min-width: 2000px) {
+      font-size: 18px;
+    }
   }
 `
 

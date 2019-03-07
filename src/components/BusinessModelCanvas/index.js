@@ -25,12 +25,11 @@ const GridContainer = styled.div`
   margin: auto;
 
   height: 100%;
-  max-height: 1600px;
-  min-height: 900px;
-
   width: 100%;
-  max-width: 2000px;
-  min-width: 1200px;
+  @media screen {
+    min-width: 1000px;
+    min-height: 600px;
+  }
 `
 
 

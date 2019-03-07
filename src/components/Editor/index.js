@@ -20,6 +20,11 @@ const GlobalDraftJsEditorStyle = createGlobalStyle`
   .DraftEditor-root {
     flex: 1;
   }
+  .public-DraftEditorPlaceholder-inner {
+    @media print {
+      display: none;
+    }
+  }
 `
 
 export function Editor({

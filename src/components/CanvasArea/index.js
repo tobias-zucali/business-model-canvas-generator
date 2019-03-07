@@ -9,6 +9,7 @@ import Editor from 'components/Editor'
 const AreaBox = styled.article`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 0.5em;
   position: relative;
 `

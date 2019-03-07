@@ -11,6 +11,11 @@ const ControlsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
+  z-index: 2;
+
+  @media print {
+    display: none;
+  }
 `
 
 export function Controls({
