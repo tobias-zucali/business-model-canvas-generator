@@ -11,7 +11,8 @@ export default function useMarkdownSync({
 
   const markdownSyncApi = useMemo(
     () => getMarkdownSyncApi({
-      model: currentModel,
+      initialModel: currentModel,
+      model,
       onModelChange: setCurrentModel,
     }),
     []

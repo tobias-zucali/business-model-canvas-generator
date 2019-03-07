@@ -5,27 +5,44 @@ import styled from 'styled-components'
 import CanvasArea from 'components/CanvasArea'
 
 
-const Header = styled.h1`
-  margin: 0.5rem 0.5rem 0 0.5rem;
-`
-const HeaderInput = styled.input`
-  border: none;
-  font-weight: inherit;
-`
-const HeaderContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
+const HeaderContainer = styled.div`
+  margin: 0.5rem 0.5rem 0 0.5rem;
+  display: flex;
+`
+const Header = styled.h1`
+  margin: 0;
+  flex: 1;
+`
+const HeaderInput = styled.input`
+  border: none;
+  display: block;
+  font-weight: inherit;
+  width: 100%;
+`
+const HeaderContainerRight = styled.div`
+`
+const PropertyInput = styled.input`
+  border: none;
+  display: block;
+  font-weight: inherit;
+  text-align: right;
+  width: 20em;
+`
+
 const StyledCanvasArea = styled(CanvasArea)`
   flex: 1;
 `
 
 function CanvasHeader({
-  gridArea,
+  getProperty,
+  gridArea, /** ignore */
   header,
   onHeaderChange,
   onPropertyChange,
-  props,
   sectionProps,
   ...otherProps
 }) {
@@ -33,30 +50,50 @@ function CanvasHeader({
     onHeaderChange(target.value)
   }, [onHeaderChange])
 
+  const handleDateChange = useCallback(({ target }) => {
+    onPropertyChange('date', { value: target.value })
+  }, [onPropertyChange])
+  const handleNameChange = useCallback(({ target }) => {
+    onPropertyChange('name', { value: target.value })
+  }, [onPropertyChange])
+
   return (
-    <HeaderContainer
+    <Container
       {...otherProps}
     >
-      <Header>
-        <HeaderInput
-          onChange={handleHeaderChange}
-          value={header}
-        />
-      </Header>
+      <HeaderContainer>
+        <Header>
+          <HeaderInput
+            aria-label="Header"
+            onChange={handleHeaderChange}
+            value={header}
+          />
+        </Header>
+        <HeaderContainerRight>
+          <PropertyInput
+            value={getProperty('date').value}
+            onChange={handleDateChange}
+          />
+          <PropertyInput
+            value={getProperty('name').value}
+            onChange={handleNameChange}
+          />
+        </HeaderContainerRight>
+      </HeaderContainer>
       <StyledCanvasArea
         isSimple={true}
         {...sectionProps}
       />
-    </HeaderContainer>
+    </Container>
   )
 }
 
 CanvasHeader.propTypes = {
+  getProperty: PropTypes.func.isRequired,
   gridArea: PropTypes.string,
   header: PropTypes.string.isRequired,
   onHeaderChange: PropTypes.func.isRequired,
   onPropertyChange: PropTypes.func.isRequired,
-  props: PropTypes.array.isRequired,
   sectionProps: PropTypes.object.isRequired,
 }
 

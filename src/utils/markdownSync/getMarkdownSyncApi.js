@@ -1,28 +1,32 @@
 import { getArrayObjectKeys } from 'utils/array'
 import isPlainObject from 'lodash/isPlainObject'
 import findIndex from 'lodash/findIndex'
+import debounce from 'lodash/debounce'
 
 import { storeLocal } from './index'
 
+const debouncedStoreLocal = debounce(storeLocal, 250)
+
 
 export default function getMarkdownSyncApi({
+  initialModel,
   model,
   onModelChange,
 }) {
-  if (!isPlainObject(model)) {
+  if (!isPlainObject(initialModel)) {
     throw new Error('Model must be provided: useMarkdownSync({ model })')
   }
 
-  let currentModel = model
+  let currentModel = initialModel
   const handleModelChange = (nextModel) => {
     currentModel = nextModel
-    storeLocal(nextModel)
+    debouncedStoreLocal(nextModel)
     onModelChange(nextModel)
   }
 
   const markdownSyncApi = {
     get SECTION_KEYS() {
-      return getArrayObjectKeys(model.sections, 'key')
+      return getArrayObjectKeys(initialModel.sections, 'key')
     },
     get sections() {
       return currentModel.sections
@@ -39,7 +43,7 @@ export default function getMarkdownSyncApi({
       const index = markdownSyncApi.getSectionIndex(key)
 
       if (index === -1) {
-        throw new Error(`Section with key "${key}" not available in model`, model)
+        throw new Error(`Section with key "${key}" not available in model`, initialModel)
       }
       const currentSection = currentModel.sections[index]
       const nextSections = Array.from(currentModel.sections)
@@ -65,13 +69,10 @@ export default function getMarkdownSyncApi({
     },
 
     get PROP_KEYS() {
-      return getArrayObjectKeys(model.props, 'key')
+      return getArrayObjectKeys(initialModel.props, 'key')
     },
     get props() {
       return currentModel.props
-    },
-    getProps(key) {
-      return markdownSyncApi.props[key]
     },
     getPropertyIndex(key) {
       return findIndex(markdownSyncApi.props, ['key', key])
@@ -85,7 +86,7 @@ export default function getMarkdownSyncApi({
       const index = markdownSyncApi.getPropertyIndex(key)
 
       if (index === -1) {
-        throw new Error(`Section with key "${key}" not available in model`, model)
+        throw new Error(`Property with key "${key}" not available in model`, initialModel)
       }
       const currentProperty = currentModel.props[index]
       const nextProps = Array.from(currentModel.props)
@@ -98,6 +99,10 @@ export default function getMarkdownSyncApi({
         ...currentModel,
         props: nextProps,
       })
+    },
+
+    reset() {
+      handleModelChange(model)
     },
   }
 

@@ -4,20 +4,12 @@ export default {
   localStorageKey: 'businessModelCanvas',
   props: [
     {
-      key: 'by',
-      value: '',
-    },
-    {
       key: 'date',
       value: new Date().toLocaleDateString(),
     },
     {
-      key: 'for',
-      value: '',
-    },
-    {
-      key: 'version',
-      value: '1',
+      key: 'name',
+      value: '[Your Name]',
     },
   ],
   sections: [

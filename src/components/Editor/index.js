@@ -6,8 +6,6 @@ import { stateToMarkdown } from 'draft-js-export-markdown'
 import styled, { createGlobalStyle } from 'styled-components'
 import useIsFocusWithin from 'hooks/useIsFocusWithin'
 
-import memoize from 'lodash/memoize'
-
 import 'draft-js/dist/Draft.css'
 import Controls from './Controls'
 
@@ -40,7 +38,7 @@ export function Editor({
 
   const handleChange = useCallback((nextEditorState) => {
     onChange(nextEditorState)
-  }, [])
+  }, [onChange])
 
   const handleKeyCommand = useCallback((command, nextEditorState) => {
     const newState = RichUtils.handleKeyCommand(nextEditorState, command)
@@ -49,7 +47,7 @@ export function Editor({
       return 'handled'
     }
     return 'not-handled'
-  }, [])
+  }, [onChange])
 
   const handleEditorClick = () => {
     editorRef.current.focus()
@@ -88,10 +86,13 @@ Editor.propTypes = {
 }
 
 
-Editor.createEditorStateFromMarkdown = memoize((md) => EditorState.createWithContent(
+Editor.createEditorStateFromMarkdown = (md) => EditorState.createWithContent(
   stateFromMarkdown(md)
-))
-
+)
+Editor.updateEditorStateWithMarkdown = (editorState, md) => EditorState.push(
+  editorState,
+  stateFromMarkdown(md)
+)
 Editor.getMarkdownFromEditorState = (editorState) => stateToMarkdown(
   editorState.getCurrentContent()
 )

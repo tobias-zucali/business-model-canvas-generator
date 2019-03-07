@@ -48,7 +48,7 @@ function CanvasArea({
         <AreaHeader>{header}</AreaHeader>
       )}
       <StyledEditor
-        editorState={editorState || Editor.createEditorStateFromMarkdown(content)}
+        editorState={editorState}
         isSimple={isSimple}
         onChange={(nextEditorState) => {
           onChange({
@@ -66,7 +66,7 @@ function CanvasArea({
 CanvasArea.propTypes = {
   border: PropTypes.object,
   content: PropTypes.string.isRequired,
-  editorState: PropTypes.object,
+  editorState: PropTypes.object.isRequired,
   header: PropTypes.string.isRequired,
   isSimple: PropTypes.bool,
   onChange: PropTypes.func.isRequired,

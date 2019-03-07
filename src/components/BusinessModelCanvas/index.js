@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import useMarkdownSync from 'hooks/useMarkdownSync'
 import styled from 'styled-components'
+import { mapObject } from 'utils/object'
 
-import CanvasArea from 'components/CanvasArea'
+import Editor from 'components/Editor'
+import Menu from 'components/Menu'
 import CanvasHeader from 'components/CanvasHeader'
+import CanvasArea from 'components/CanvasArea'
 
 import model from './model'
 
@@ -27,8 +30,8 @@ const GridContainer = styled.div`
   height: 100%;
   width: 100%;
   @media screen {
-    min-width: 1000px;
-    min-height: 600px;
+    min-width: 90em;
+    min-height: 60em;
   }
 `
 
@@ -40,58 +43,90 @@ const StyledCanvasHeader = styled(CanvasHeader)`
   grid-area: ${({ gridArea }) => gridArea};
 `
 
+const getInitialEditorStates = (sections) => sections.reduce(
+  (acc, section) => ({
+    ...acc,
+    [section.key]: Editor.createEditorStateFromMarkdown(section.content),
+  }),
+  {}
+)
+
 
 function BusinessModelCanvas() {
   const {
+    getProperty,
+    getSection,
     header,
-    props,
+    reset,
     sections,
     updateHeader,
     updateProperty,
     updateSection,
   } = useMarkdownSync({ model })
 
-  const [editorStates, setEditorStates] = useState({})
-  const setSectionEditorState = (sectionKey, editorState) => setEditorStates({
-    ...editorStates,
-    [sectionKey]: editorState,
-  })
+  const initialEditorStates = useMemo(
+    () => getInitialEditorStates(sections),
+    []
+  )
+
+  const [editorStates, setEditorStates] = useState(initialEditorStates)
+  const setSectionEditorState = (key, editorState) => {
+    const nextEditorStates = {
+      ...editorStates,
+      [key]: editorState,
+    }
+    setEditorStates(nextEditorStates)
+  }
+
+  const handleReset = () => {
+    reset()
+    const nextEditorStates = mapObject(editorStates, (key, editorState) => Editor.updateEditorStateWithMarkdown(
+      editorState,
+      getSection(key).content,
+    ))
+    setEditorStates(nextEditorStates)
+  }
 
   return (
-    <GridContainer>
-      {(sections.map(({ isHeader, key, ...section }) => {
-        const sectionProps = {
-          editorState: editorStates[key],
-          isSimple: isHeader,
-          onChange: ({ content, editorState }) => {
-            updateSection(key, { content })
-            setSectionEditorState(key, editorState)
-          },
-          ...section,
-        }
-        if (isHeader) {
-          return (
-            <StyledCanvasHeader
-              gridArea={key}
-              header={header}
-              key={key}
-              onHeaderChange={updateHeader}
-              onPropertyChange={updateProperty}
-              props={props}
-              sectionProps={sectionProps}
-            />
-          )
-        } else {
-          return (
-            <StyledCanvasArea
-              gridArea={key}
-              key={key}
-              {...sectionProps}
-            />
-          )
-        }
-      }))}
-    </GridContainer>
+    <React.Fragment>
+      <Menu
+        onReset={handleReset}
+      />
+      <GridContainer>
+        {(sections.map(({ isHeader, key, ...section }) => {
+          const sectionProps = {
+            editorState: editorStates[key],
+            isSimple: isHeader,
+            onChange: ({ content, editorState }) => {
+              updateSection(key, { content })
+              setSectionEditorState(key, editorState)
+            },
+            ...section,
+          }
+          if (isHeader) {
+            return (
+              <StyledCanvasHeader
+                gridArea={key}
+                header={header}
+                key={key}
+                onHeaderChange={updateHeader}
+                onPropertyChange={updateProperty}
+                getProperty={getProperty}
+                sectionProps={sectionProps}
+              />
+            )
+          } else {
+            return (
+              <StyledCanvasArea
+                gridArea={key}
+                key={key}
+                {...sectionProps}
+              />
+            )
+          }
+        }))}
+      </GridContainer>
+    </React.Fragment>
   )
 }
 
