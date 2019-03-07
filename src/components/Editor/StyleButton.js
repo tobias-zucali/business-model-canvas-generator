@@ -2,48 +2,64 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import UnstyledButton from '../UnstyledButton'
 
-
-const DefaultStyleButton = styled(UnstyledButton)`
-  border-radius: 0.2em;
-  color: #999999;
+const StyledStyleButton = styled(StyleButton)`
+  color: ${(props) => props.isActive ? 'inherit' : '#999999'};
   cursor: pointer;
-  padding: 0.5em;
+  fill: currentColor;
+  padding: 0.25em;
   &:hover, &:focus {
-    background: #EEEEEE;
+    background: #DDDDDD;
+  }
+  &:first-child {
+    padding-left: 0.4em;
+    border-top-left-radius: 0.75em;
+    border-bottom-left-radius: 0.75em;
+  }
+  &:last-child {
+    padding-left: 0.4em;
+    border-top-right-radius: 0.75em;
+    border-bottom-right-radius: 0.75em;
   }
 `
-const ActiveStyleButton = styled(DefaultStyleButton)`
-  color: #000000;
-`
-
 
 function StyleButton({
-  active,
+  Icon,
+  isActive,
   label,
   onToggle,
   style,
+  ...otherProps
 }) {
-  const ButtonComponent = active ? ActiveStyleButton : DefaultStyleButton
+  const handleClick = (event) => {
+    event.preventDefault()
+    onToggle(style)
+  }
+  const handleKeyDown = (event) => {
+    if (event.key === ' ' || event.key === 'Enter') {
+      handleClick(event)
+    }
+  }
   return (
-    <ButtonComponent
-      onMouseDown={(e) => {
-        e.preventDefault()
-        onToggle(style)
-      }}
-    >
-      {label}
-    </ButtonComponent>
+    <Icon
+      aria-label={label}
+      aria-pressed={isActive}
+      onKeyDown={handleKeyDown}
+      onMouseDown={handleClick}
+      role="button"
+      tabIndex="0"
+      {...otherProps}
+    />
   )
 }
 
 StyleButton.propTypes = {
-  active: PropTypes.bool.isRequired,
-  onToggle: PropTypes.func.isRequired,
+  Icon: PropTypes.func.isRequired,
+  isActive: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
+  onToggle: PropTypes.func.isRequired,
   style: PropTypes.string.isRequired,
 }
 
 
-export default StyleButton
+export default StyledStyleButton

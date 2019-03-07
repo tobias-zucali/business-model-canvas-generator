@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import StyleButton from './StyleButton'
-import { SIMPLE_BLOCK_TYPES } from './constants'
+import ControlsGroup from './ControlsGroup'
+import { blockControlTypes } from './controlTypes'
 
 
 function BlockStyleControls({
@@ -15,17 +16,16 @@ function BlockStyleControls({
     .getType()
 
   return (
-    <div className="RichEditor-controls">
-      {SIMPLE_BLOCK_TYPES.map((type) => (
+    <ControlsGroup>
+      {blockControlTypes.map((controlType) => (
         <StyleButton
-          key={type.label}
-          active={type.style === blockType}
-          label={type.label}
+          isActive={controlType.style === blockType}
+          key={controlType.label}
           onToggle={onToggle}
-          style={type.style}
+          {...controlType}
         />
       ))}
-    </div>
+    </ControlsGroup>
   )
 }
 

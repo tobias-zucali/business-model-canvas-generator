@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import StyleButton from './StyleButton'
-import { SIMPLE_INLINE_STYLES } from './constants'
+import ControlsGroup from './ControlsGroup'
+import { inlineControlTypes } from './controlTypes'
 
 
 function InlineStyleControls({
@@ -12,17 +13,16 @@ function InlineStyleControls({
   const currentStyle = editorState.getCurrentInlineStyle()
 
   return (
-    <div className="RichEditor-controls">
-      {SIMPLE_INLINE_STYLES.map((type) => (
+    <ControlsGroup>
+      {inlineControlTypes.map((controlType) => (
         <StyleButton
-          key={type.label}
-          active={currentStyle.has(type.style)}
-          label={type.label}
+          isActive={currentStyle.has(controlType.style)}
+          key={controlType.label}
           onToggle={onToggle}
-          style={type.style}
+          {...controlType}
         />
       ))}
-    </div>
+    </ControlsGroup>
   )
 }
 
