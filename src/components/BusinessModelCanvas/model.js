@@ -90,7 +90,7 @@ export default {
       },
       content: '',
       header: 'Key Partners',
-      placeholder: 'Step 9: In order to optimize operations and reduce risks of a business model, organizations usually cultivate buyer-supplier relationships so they can focus on their core activity.',
+      placeholder: 'Step 9: In order to optimise operations and reduce risks of a business model, organisations usually cultivate buyer-supplier relationships so they can focus on their core activity.',
     },
     {
       key: 'cost-structure',

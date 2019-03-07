@@ -58,6 +58,7 @@ function BusinessModelCanvas() {
     getSection,
     header,
     reset,
+    saveAs,
     sections,
     updateHeader,
     updateProperty,
@@ -91,6 +92,7 @@ function BusinessModelCanvas() {
     <React.Fragment>
       <Menu
         onReset={handleReset}
+        onSaveAs={saveAs}
       />
       <GridContainer>
         {(sections.map(({ isHeader, key, ...section }) => {

@@ -17,6 +17,7 @@ const Container = styled.div`
 
 function Menu({
   onReset,
+  onSaveAs,
   ...otherProps
 }) {
   const handleReset = useCallback(() => {
@@ -29,10 +30,12 @@ function Menu({
     <Container
       {...otherProps}
     >
-      {/* <button>
+      <button
+        onClick={onSaveAs}
+      >
         Save to file
       </button>
-      <button>
+      {/* <button>
         Import from file
       </button> */}
       <button
@@ -51,6 +54,7 @@ function Menu({
 
 Menu.propTypes = {
   onReset: PropTypes.func.isRequired,
+  onSaveAs: PropTypes.func.isRequired,
 }
 
 export default Menu
