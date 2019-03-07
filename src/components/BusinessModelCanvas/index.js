@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import useMarkdownSync from 'hooks/useMarkdownSync'
 import styled from 'styled-components'
 
-import memoize from 'lodash/memoize'
-
 import CanvasArea from 'components/CanvasArea'
+import CanvasHeader from 'components/CanvasHeader'
+
 import model from './model'
 
 
 const GridContainer = styled.div`
-  background-color: ${(props) => props.theme.paperBackground};
-  border-color: ${(props) => props.theme.pageBackground};
+  background-color: ${({ theme }) => theme.paperBackground};
+  border-color: ${({ theme }) => theme.pageBackground};
   border-style: solid;
   border-width: 0.5em;
   box-sizing: border-box;
@@ -32,26 +32,24 @@ const GridContainer = styled.div`
   }
 `
 
+const StyledCanvasArea = styled(CanvasArea)`
+  grid-area: ${({ gridArea }) => gridArea};
+`
 
-export function getCanvasArea(key) {
-  const SectionCanvasArea = styled(CanvasArea)`
-    grid-area: ${key};
-  `
-  return SectionCanvasArea
-}
+const StyledCanvasHeader = styled(CanvasHeader)`
+  grid-area: ${({ gridArea }) => gridArea};
+`
 
 
 function BusinessModelCanvas() {
   const {
+    header,
+    props,
     sections,
+    updateHeader,
+    updateProperty,
     updateSection,
   } = useMarkdownSync({ model })
-
-
-  const memoizedGetCanvasArea = useMemo(
-    () => memoize(getCanvasArea),
-    []
-  )
 
   const [editorStates, setEditorStates] = useState({})
   const setSectionEditorState = (sectionKey, editorState) => setEditorStates({
@@ -61,19 +59,37 @@ function BusinessModelCanvas() {
 
   return (
     <GridContainer>
-      {(sections.map(({ key, ...section }) => {
-        const SectionCanvasArea = memoizedGetCanvasArea(key)
-        return (
-          <SectionCanvasArea
-            editorState={editorStates[key]}
-            key={key}
-            onChange={({ content, editorState }) => {
-              updateSection(key, { content })
-              setSectionEditorState(key, editorState)
-            }}
-            {...section}
-          />
-        )
+      {(sections.map(({ isHeader, key, ...section }) => {
+        const sectionProps = {
+          editorState: editorStates[key],
+          isSimple: isHeader,
+          onChange: ({ content, editorState }) => {
+            updateSection(key, { content })
+            setSectionEditorState(key, editorState)
+          },
+          ...section,
+        }
+        if (isHeader) {
+          return (
+            <StyledCanvasHeader
+              gridArea={key}
+              header={header}
+              key={key}
+              onHeaderChange={updateHeader}
+              onPropertyChange={updateProperty}
+              props={props}
+              sectionProps={sectionProps}
+            />
+          )
+        } else {
+          return (
+            <StyledCanvasArea
+              gridArea={key}
+              key={key}
+              {...sectionProps}
+            />
+          )
+        }
       }))}
     </GridContainer>
   )

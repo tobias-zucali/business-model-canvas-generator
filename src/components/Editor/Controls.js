@@ -10,7 +10,7 @@ import InlineStyleControls from './InlineStyleControls'
 const ControlsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
+  visibility: ${({ isVisible }) => isVisible ? 'visible' : 'hidden'};
   z-index: 2;
 
   @media print {

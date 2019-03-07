@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const AreaBorderBase = styled.div`
   position: absolute;
-  border-color: ${(props) => props.theme.pageBackground};
+  border-color: ${({ theme }) => theme.pageBackground};
   border-style: none;
   border-width: 1px;
 

@@ -14,6 +14,11 @@ export default function getMarkdownSyncApi({
   }
 
   let currentModel = model
+  const handleModelChange = (nextModel) => {
+    currentModel = nextModel
+    storeLocal(nextModel)
+    onModelChange(nextModel)
+  }
 
   const markdownSyncApi = {
     get SECTION_KEYS() {
@@ -42,17 +47,21 @@ export default function getMarkdownSyncApi({
         ...currentSection,
         ...sectionUpdate,
       }
-      currentModel = {
+
+      handleModelChange({
         ...currentModel,
         sections: nextSections,
-      }
-
-      storeLocal(currentModel)
-      onModelChange(currentModel)
+      })
     },
 
     get header() {
       return currentModel.header
+    },
+    updateHeader(headerUpdate) {
+      handleModelChange({
+        ...currentModel,
+        header: headerUpdate,
+      })
     },
 
     get PROP_KEYS() {
@@ -84,13 +93,11 @@ export default function getMarkdownSyncApi({
         ...currentProperty,
         ...propertyUpdate,
       }
-      currentModel = {
+
+      handleModelChange({
         ...currentModel,
         props: nextProps,
-      }
-
-      storeLocal(currentModel)
-      onModelChange(currentModel)
+      })
     },
   }
 

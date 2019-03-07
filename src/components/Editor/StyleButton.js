@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 const StyledStyleButton = styled(StyleButton)`
-  color: ${(props) => props.isActive ? 'inherit' : '#999999'};
+  color: ${({ isActive }) => isActive ? 'inherit' : '#999999'};
   cursor: pointer;
   fill: currentColor;
   padding: 0.25em;

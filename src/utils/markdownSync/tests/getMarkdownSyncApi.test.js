@@ -100,6 +100,18 @@ describe('utils/useMarkdownSync/getMarkdownSyncApi', () => {
         'Your Business'
       )
     })
+
+    it('updates header', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+      markdownSyncApi.updateHeader('My new head!')
+
+      expect(
+        markdownSyncApi.header
+      ).toEqual(
+        'My new head!'
+      )
+    })
   })
 
   describe('properties', () => {

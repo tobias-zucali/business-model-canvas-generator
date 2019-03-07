@@ -1,6 +1,6 @@
 
 export default {
-  header: 'Your Business',
+  header: '[Your Business]',
   localStorageKey: 'businessModelCanvas',
   props: [
     {
@@ -28,6 +28,7 @@ export default {
       },
       content: '',
       header: 'Purpose',
+      isHeader: true,
       placeholder: 'Step 1: What is the business purpose? You need a clear vision to be able to validate the model.',
     },
     {

@@ -10,14 +10,20 @@ const AreaBox = styled.article`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0.5em;
+  padding: 0.5rem;
   position: relative;
 `
 const AreaHeader = styled.h2`
   font-size: 1.4em;
-  margin: 0 0 0.5em 0;
+  margin: 0 0 0.5rem 0;
 `
-
+const HiddenAreaHeader = styled.h2`
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  text-indent: -999;
+`
 const StyledEditor = styled(Editor)`
   flex: 1;
 `
@@ -27,6 +33,7 @@ function CanvasArea({
   content,
   editorState,
   header,
+  isSimple,
   onChange,
   placeholder,
   ...otherProps
@@ -35,11 +42,14 @@ function CanvasArea({
     <AreaBox
       {...otherProps}
     >
-      <AreaHeader>
-        {header}
-      </AreaHeader>
+      {isSimple ? (
+        <HiddenAreaHeader>{header}</HiddenAreaHeader>
+      ) : (
+        <AreaHeader>{header}</AreaHeader>
+      )}
       <StyledEditor
         editorState={editorState || Editor.createEditorStateFromMarkdown(content)}
+        isSimple={isSimple}
         onChange={(nextEditorState) => {
           onChange({
             content: Editor.getMarkdownFromEditorState(nextEditorState),
@@ -58,6 +68,7 @@ CanvasArea.propTypes = {
   content: PropTypes.string.isRequired,
   editorState: PropTypes.object,
   header: PropTypes.string.isRequired,
+  isSimple: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 }
