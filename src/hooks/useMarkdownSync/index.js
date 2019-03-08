@@ -1,21 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import { getInitialModel, getMarkdownSyncApi } from 'utils/markdownSync'
+import getMarkdownSyncApi from 'utils/getMarkdownSyncApi'
 
+
+const getInitialMarkdownSyncApi = (model) => {
+  const markdownSyncApi = getMarkdownSyncApi({ model })
+  markdownSyncApi.loadFromLocalStorage()
+  return markdownSyncApi
+}
 
 export default function useMarkdownSync({
   model,
 }) {
-  const initialModel = useMemo(() => getInitialModel(model))
-  const [currentModel, setCurrentModel] = useState(initialModel)
-
   const markdownSyncApi = useMemo(
-    () => getMarkdownSyncApi({
-      initialModel: currentModel,
-      model,
-      onModelChange: setCurrentModel,
-    }),
+    () => getInitialMarkdownSyncApi(model),
     []
   )
+  const [/* value */, triggerRenderCycle] = useState()
+  useEffect(() => {
+    markdownSyncApi.setOnChange(triggerRenderCycle)
+
+    return function cleanup() {
+      markdownSyncApi.removeOnChange()
+    }
+  })
+
+
   return markdownSyncApi
 }

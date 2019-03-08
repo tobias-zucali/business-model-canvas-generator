@@ -8,12 +8,12 @@ import without from 'lodash/without'
 import splitMarkdown from './splitMarkdown'
 
 
-export default function markdownToModel(defaultModel, markdown) {
+export default function markdownToModel(model, markdown) {
   try {
-    const model = splitMarkdown(markdown)
+    const nextModel = splitMarkdown(markdown)
 
-    const modelSectionKeys = getArrayObjectKeys(model.sections, { key: 'key' })
-    const defaultModelSectionKeys = getArrayObjectKeys(defaultModel.sections, { key: 'key' })
+    const modelSectionKeys = getArrayObjectKeys(nextModel.sections, { key: 'key' })
+    const defaultModelSectionKeys = getArrayObjectKeys(model.sections, { key: 'key' })
     const invalidSectionKeys = without(
       modelSectionKeys,
       ...defaultModelSectionKeys
@@ -21,12 +21,12 @@ export default function markdownToModel(defaultModel, markdown) {
     if (invalidSectionKeys.length > 0) {
       logger.warn('Unexpected sections found:', invalidSectionKeys)
       invalidSectionKeys.forEach((invalidSectionKey) => {
-        delete model.sections[invalidSectionKey]
+        delete nextModel.sections[invalidSectionKey]
       })
     }
 
-    const modelPropertyKeys = getArrayObjectKeys(model.sections, { key: 'key' })
-    const defaultModelPropertyKeys = getArrayObjectKeys(defaultModel.sections, { key: 'key' })
+    const modelPropertyKeys = getArrayObjectKeys(nextModel.sections, { key: 'key' })
+    const defaultModelPropertyKeys = getArrayObjectKeys(model.sections, { key: 'key' })
     const invalidPropertyKeys = without(
       modelPropertyKeys,
       ...defaultModelPropertyKeys
@@ -34,25 +34,25 @@ export default function markdownToModel(defaultModel, markdown) {
     if (invalidPropertyKeys.length > 0) {
       logger.warn('Unexpected props found:', invalidPropertyKeys)
       invalidPropertyKeys.forEach((invalidPropertyKey) => {
-        delete model.sections[invalidPropertyKey]
+        delete nextModel.sections[invalidPropertyKey]
       })
     }
 
-    model.sections = mergeArraysByKey(
-      defaultModel.sections,
+    nextModel.sections = mergeArraysByKey(
       model.sections,
+      nextModel.sections,
       { key: 'key' }
     )
 
-    model.props = mergeArraysByKey(
-      defaultModel.props,
+    nextModel.props = mergeArraysByKey(
       model.props,
+      nextModel.props,
       { key: 'key' }
     )
 
     const mergedModel = deepMergeObjects(
-      defaultModel,
       model,
+      nextModel,
       { arrayKey: 'key' },
     )
     return mergedModel
@@ -60,5 +60,5 @@ export default function markdownToModel(defaultModel, markdown) {
     logger.error('Parsing model failed')
     logger.error(error)
   }
-  return defaultModel
+  return model
 }

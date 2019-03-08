@@ -53,20 +53,10 @@ const getInitialEditorStates = (sections) => sections.reduce(
 
 
 function BusinessModelCanvas() {
-  const {
-    getProperty,
-    getSection,
-    header,
-    reset,
-    saveAs,
-    sections,
-    updateHeader,
-    updateProperty,
-    updateSection,
-  } = useMarkdownSync({ model })
+  const markdownSyncApi = useMarkdownSync({ model })
 
   const initialEditorStates = useMemo(
-    () => getInitialEditorStates(sections),
+    () => getInitialEditorStates(markdownSyncApi.sections),
     []
   )
 
@@ -79,28 +69,39 @@ function BusinessModelCanvas() {
     setEditorStates(nextEditorStates)
   }
 
-  const handleReset = () => {
-    reset()
+  const updateEditorStates = () => {
     const nextEditorStates = mapObject(editorStates, (key, editorState) => Editor.updateEditorStateWithMarkdown(
       editorState,
-      getSection(key).content,
+      markdownSyncApi.getSection(key).content,
     ))
     setEditorStates(nextEditorStates)
+  }
+  const handleReset = () => {
+    markdownSyncApi.reset()
+    updateEditorStates()
+  }
+  const handleLoadFromFile = (file) => {
+    markdownSyncApi.loadFromFile(
+      file
+    ).then(
+      updateEditorStates
+    )
   }
 
   return (
     <React.Fragment>
       <Menu
+        loadFromFile={handleLoadFromFile}
         onReset={handleReset}
-        onSaveAs={saveAs}
+        onSaveAs={markdownSyncApi.saveAs}
       />
       <GridContainer>
-        {(sections.map(({ isHeader, key, ...section }) => {
+        {(markdownSyncApi.sections.map(({ isHeader, key, ...section }) => {
           const sectionProps = {
             editorState: editorStates[key],
             isSimple: isHeader,
             onChange: ({ content, editorState }) => {
-              updateSection(key, { content })
+              markdownSyncApi.updateSection(key, { content })
               setSectionEditorState(key, editorState)
             },
             ...section,
@@ -109,11 +110,11 @@ function BusinessModelCanvas() {
             return (
               <StyledCanvasHeader
                 gridArea={key}
-                header={header}
+                header={markdownSyncApi.header}
                 key={key}
-                onHeaderChange={updateHeader}
-                onPropertyChange={updateProperty}
-                getProperty={getProperty}
+                onHeaderChange={markdownSyncApi.updateHeader}
+                onPropertyChange={markdownSyncApi.updateProperty}
+                getProperty={markdownSyncApi.getProperty}
                 sectionProps={sectionProps}
               />
             )

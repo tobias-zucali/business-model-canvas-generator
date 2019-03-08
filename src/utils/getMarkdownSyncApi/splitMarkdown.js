@@ -1,5 +1,5 @@
 
-const mainHeaderRegex = /^\s*#\s*(.*)$/
+const mainHeaderRegex = /^\s*#(?!#)\s*(.*)$/
 const anyHeaderRegex = /^\s*#(.*)$/
 const propertyRegex = /^\s*(\S+)\s*:(.*)$/
 const sectionHeaderRegex = /^\s*##([^{]*){([^}]*)}(.*)$/

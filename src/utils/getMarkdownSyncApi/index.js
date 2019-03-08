@@ -4,31 +4,75 @@ import findIndex from 'lodash/findIndex'
 import debounce from 'lodash/debounce'
 import FileSaver from 'file-saver'
 
-import { storeLocal } from './index'
 import modelToMarkdown from './modelToMarkdown'
+import markdownToModel from './markdownToModel'
 
-const debouncedStoreLocal = debounce(storeLocal, 250)
+const storeLocal = debounce((model) => {
+  localStorage.setItem(model.localStorageKey, modelToMarkdown(model))
+}, 250)
 
 
 export default function getMarkdownSyncApi({
-  initialModel,
   model,
-  onModelChange,
 }) {
-  if (!isPlainObject(initialModel)) {
+  if (!isPlainObject(model)) {
     throw new Error('Model must be provided: useMarkdownSync({ model })')
   }
 
-  let currentModel = initialModel
+  let currentModel = model
+  let onModelChange
   const handleModelChange = (nextModel) => {
     currentModel = nextModel
-    debouncedStoreLocal(nextModel)
-    onModelChange(nextModel)
+    storeLocal(nextModel)
+    if (onModelChange) {
+      onModelChange(nextModel)
+    }
   }
 
   const markdownSyncApi = {
+    loadFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader()
+        fileReader.onload = (event) => {
+          markdownSyncApi.loadMarkdown(
+            event.target.result
+          )
+          resolve()
+        }
+        fileReader.onerror = reject
+        fileReader.readAsText(file)
+      })
+    },
+    loadFromLocalStorage() {
+      markdownSyncApi.loadMarkdown(
+        localStorage.getItem(model.localStorageKey)
+      )
+    },
+    loadMarkdown(markdown) {
+      if (markdown) {
+        handleModelChange(
+          markdownToModel(model, markdown)
+        )
+      }
+    },
+    saveAs() {
+      const blob = new Blob([modelToMarkdown(currentModel)], { type: 'text/plain;charset=utf-8' })
+      const fileName = `business model canvas - ${currentModel.header.substr(0, 20).replace(/[^a-zA-Z0-9]+/g, ' ')}.txt`
+      FileSaver.saveAs(blob, fileName)
+    },
+    reset() {
+      handleModelChange(model)
+    },
+
+    setOnChange(nextOnModelChange) {
+      onModelChange = nextOnModelChange
+    },
+    removeOnChange() {
+      onModelChange = null
+    },
+
     get SECTION_KEYS() {
-      return getArrayObjectKeys(initialModel.sections, 'key')
+      return getArrayObjectKeys(model.sections, 'key')
     },
     get sections() {
       return currentModel.sections
@@ -45,7 +89,7 @@ export default function getMarkdownSyncApi({
       const index = markdownSyncApi.getSectionIndex(key)
 
       if (index === -1) {
-        throw new Error(`Section with key "${key}" not available in model`, initialModel)
+        throw new Error(`Section with key "${key}" not available in model`, model)
       }
       const currentSection = currentModel.sections[index]
       const nextSections = Array.from(currentModel.sections)
@@ -71,7 +115,7 @@ export default function getMarkdownSyncApi({
     },
 
     get PROP_KEYS() {
-      return getArrayObjectKeys(initialModel.props, 'key')
+      return getArrayObjectKeys(model.props, 'key')
     },
     get props() {
       return currentModel.props
@@ -88,7 +132,7 @@ export default function getMarkdownSyncApi({
       const index = markdownSyncApi.getPropertyIndex(key)
 
       if (index === -1) {
-        throw new Error(`Property with key "${key}" not available in model`, initialModel)
+        throw new Error(`Property with key "${key}" not available in model`, model)
       }
       const currentProperty = currentModel.props[index]
       const nextProps = Array.from(currentModel.props)
@@ -101,15 +145,6 @@ export default function getMarkdownSyncApi({
         ...currentModel,
         props: nextProps,
       })
-    },
-
-    reset() {
-      handleModelChange(model)
-    },
-    saveAs() {
-      const blob = new Blob([modelToMarkdown(currentModel)], { type: 'text/plain;charset=utf-8' })
-      const fileName = `business model canvas - ${currentModel.header.substr(0, 20).replace(/[^a-zA-Z0-9]+/g, ' ')}.txt`
-      FileSaver.saveAs(blob, fileName)
     },
   }
 
