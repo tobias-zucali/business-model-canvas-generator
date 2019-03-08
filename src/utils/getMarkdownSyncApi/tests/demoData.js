@@ -19,11 +19,15 @@ With multiline!!!
 `
 
 export const model = {
-  header: 'Your Business',
+  header: {
+    value: 'Your Business',
+    placeholder: 'Header',
+  },
   props: [
     {
       key: 'date',
       value: '2012-12-12',
+      placeholder: 'Date',
     },
     {
       key: 'version',

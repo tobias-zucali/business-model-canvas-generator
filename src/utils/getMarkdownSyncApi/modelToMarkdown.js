@@ -5,7 +5,7 @@ export default function modelToMarkdown(
     sections,
   }
 ) {
-  return `# ${header}
+  return `# ${header.value}
 ${props.map(({
     key,
     value,

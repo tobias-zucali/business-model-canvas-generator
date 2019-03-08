@@ -42,14 +42,18 @@ export function findHeader(lines) {
     if (headerMatch) {
       const [/* fullMatch */, header] = headerMatch
       return {
-        header: header.trim(),
+        header: {
+          value: header.trim(),
+        },
         index: currentIndex,
       }
     }
     currentIndex += 1
   }
   return {
-    header: '',
+    header: {
+      value: '',
+    },
     index: -1,
   }
 }

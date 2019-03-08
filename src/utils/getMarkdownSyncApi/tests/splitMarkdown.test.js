@@ -9,7 +9,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
       splitMarkdown(markdown)
     ).toEqual(
       {
-        header: 'Your Business',
+        header: {
+          value: 'Your Business',
+        },
         props: [
           {
             key: 'date',
@@ -56,7 +58,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
         findHeader(['# oh my header!'])
       ).toEqual(
         {
-          header: 'oh my header!',
+          header: {
+            value: 'oh my header!',
+          },
           index: 0,
         }
       )
@@ -67,7 +71,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
         findHeader(['#   oh my header!    '])
       ).toEqual(
         {
-          header: 'oh my header!',
+          header: {
+            value: 'oh my header!',
+          },
           index: 0,
         }
       )
@@ -78,7 +84,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
         findHeader(['', '', '# oh my header!', '## ignore this please!'])
       ).toEqual(
         {
-          header: 'oh my header!',
+          header: {
+            value: 'oh my header!',
+          },
           index: 2,
         }
       )
@@ -89,7 +97,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
         findHeader(['', ''])
       ).toEqual(
         {
-          header: '',
+          header: {
+            value: '',
+          },
           index: -1,
         }
       )
@@ -100,7 +110,9 @@ describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
         findHeader(['## A second level header'])
       ).toEqual(
         {
-          header: '',
+          header: {
+            value: '',
+          },
           index: -1,
         }
       )

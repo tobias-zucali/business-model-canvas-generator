@@ -57,7 +57,7 @@ export default function getMarkdownSyncApi({
     },
     saveAs() {
       const blob = new Blob([modelToMarkdown(currentModel)], { type: 'text/plain;charset=utf-8' })
-      const fileName = `business model canvas - ${currentModel.header.substr(0, 20).replace(/[^a-zA-Z0-9]+/g, ' ')}.txt`
+      const fileName = `business model canvas - ${currentModel.header.value.substr(0, 20).replace(/[^a-zA-Z0-9]+/g, ' ')}.txt`
       FileSaver.saveAs(blob, fileName)
     },
     reset() {
@@ -86,6 +86,9 @@ export default function getMarkdownSyncApi({
       ]
     },
     updateSection(key, sectionUpdate) {
+      if (!isPlainObject(sectionUpdate)) {
+        throw new Error('Invalid arguments for markdownSyncApi.updateSection(key: string, sectionUpdate: object)')
+      }
       const index = markdownSyncApi.getSectionIndex(key)
 
       if (index === -1) {
@@ -108,9 +111,15 @@ export default function getMarkdownSyncApi({
       return currentModel.header
     },
     updateHeader(headerUpdate) {
+      if (!isPlainObject(headerUpdate)) {
+        throw new Error('Invalid arguments for markdownSyncApi.updateHeader(headerUpdate: object)')
+      }
       handleModelChange({
         ...currentModel,
-        header: headerUpdate,
+        header: {
+          ...currentModel.header,
+          ...headerUpdate,
+        },
       })
     },
 
@@ -129,6 +138,10 @@ export default function getMarkdownSyncApi({
       ]
     },
     updateProperty(key, propertyUpdate) {
+      if (!isPlainObject(propertyUpdate)) {
+        throw new Error('Invalid arguments for markdownSyncApi.updateHeader(key: string, propertyUpdate: object)')
+      }
+
       const index = markdownSyncApi.getPropertyIndex(key)
 
       if (index === -1) {

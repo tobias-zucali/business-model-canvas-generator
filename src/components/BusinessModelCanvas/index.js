@@ -19,8 +19,9 @@ const GridContainer = styled.div`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.5fr 1fr 1fr 1fr;
+  grid-template-rows: auto 0.5fr 1fr 1fr 1fr;
   grid-template-areas:
+    "menu menu menu menu menu menu menu menu menu menu"
     "purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose"
     "key-partners key-partners key-activities key-activities value-propositions value-propositions customer-relationships customer-relationships customer-segments customer-segments"
     "key-partners key-partners key-resources key-resources value-propositions value-propositions channels channels customer-segments customer-segments"
@@ -41,6 +42,10 @@ const StyledCanvasArea = styled(CanvasArea)`
 
 const StyledCanvasHeader = styled(CanvasHeader)`
   grid-area: ${({ gridArea }) => gridArea};
+`
+
+const StyledMenu = styled(Menu)`
+  grid-area: menu;
 `
 
 const getInitialEditorStates = (sections) => sections.reduce(
@@ -90,12 +95,12 @@ function BusinessModelCanvas() {
 
   return (
     <React.Fragment>
-      <Menu
-        loadFromFile={handleLoadFromFile}
-        onReset={handleReset}
-        onSaveAs={markdownSyncApi.saveAs}
-      />
       <GridContainer>
+        <StyledMenu
+          loadFromFile={handleLoadFromFile}
+          onReset={handleReset}
+          onSaveAs={markdownSyncApi.saveAs}
+        />
         {(markdownSyncApi.sections.map(({ isHeader, key, ...section }) => {
           const sectionProps = {
             editorState: editorStates[key],

@@ -47,7 +47,7 @@ function CanvasHeader({
   ...otherProps
 }) {
   const handleHeaderChange = useCallback(({ target }) => {
-    onHeaderChange(target.value)
+    onHeaderChange({ value: target.value })
   }, [onHeaderChange])
 
   const handleDateChange = useCallback(({ target }) => {

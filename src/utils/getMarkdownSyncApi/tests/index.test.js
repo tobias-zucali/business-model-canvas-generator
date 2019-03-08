@@ -23,7 +23,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
   it('returns api', () => {
     const onModelChange = jest.fn()
-    const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+    const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
     expect(
       markdownSyncApi
     ).toEqual(
@@ -34,7 +34,7 @@ describe('utils/getMarkdownSyncApi', () => {
   describe('sections', () => {
     it('provides section keys', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
       expect(
         markdownSyncApi.SECTION_KEYS
       ).toEqual(
@@ -44,7 +44,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides all sections', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
       expect(
         markdownSyncApi.sections
       ).toEqual(
@@ -54,7 +54,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides index of specific section', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       expect(
         markdownSyncApi.getSectionIndex(someSectionKey)
@@ -65,7 +65,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides specific section', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       expect(
         markdownSyncApi.getSection(someSectionKey)
@@ -76,7 +76,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('updates section', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       const sectionUpdate = { content: 'some new content' }
 
@@ -88,28 +88,67 @@ describe('utils/getMarkdownSyncApi', () => {
         ...sectionUpdate,
       })
     })
+
+    it('throws an error if update is no object', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+
+      expect(
+        () => markdownSyncApi.updateProperty(someSectionKey, 'My new section!')
+      ).toThrow(
+        /invalid arguments/i
+      )
+    })
+
+    it('throws an error if key is not found', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+
+      expect(
+        () => markdownSyncApi.updateSection('hugo', someSection)
+      ).toThrow(
+        /not available/i
+      )
+    })
   })
 
   describe('header', () => {
     it('provides header', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
       expect(
         markdownSyncApi.header
       ).toEqual(
-        'Your Business'
+        {
+          placeholder: 'Header',
+          value: 'Your Business',
+        }
       )
     })
 
     it('updates header', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
-      markdownSyncApi.updateHeader('My new head!')
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+      markdownSyncApi.updateHeader({
+        value: 'My new head!',
+      })
 
       expect(
         markdownSyncApi.header
-      ).toEqual(
-        'My new head!'
+      ).toEqual({
+        placeholder: 'Header',
+        value: 'My new head!',
+      })
+    })
+
+    it('throws an error if update is no object', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+
+      expect(
+        () => markdownSyncApi.updateHeader('My new head!')
+      ).toThrow(
+        /invalid arguments/i
       )
     })
   })
@@ -117,7 +156,7 @@ describe('utils/getMarkdownSyncApi', () => {
   describe('properties', () => {
     it('provides property keys', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
       expect(
         markdownSyncApi.PROP_KEYS
       ).toEqual(
@@ -127,7 +166,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides all props', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
       expect(
         markdownSyncApi.props
       ).toEqual(
@@ -137,7 +176,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides index of specific section', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       expect(
         markdownSyncApi.getPropertyIndex(somePropertyKey)
@@ -148,7 +187,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('provides specific property', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       expect(
         markdownSyncApi.getProperty(somePropertyKey)
@@ -159,7 +198,7 @@ describe('utils/getMarkdownSyncApi', () => {
 
     it('updates property', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
       const propertyUpdate = { content: 'some new content' }
 
@@ -171,14 +210,39 @@ describe('utils/getMarkdownSyncApi', () => {
         ...propertyUpdate,
       })
     })
+
+    it('throws an error if update is no object', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+
+      expect(
+        () => markdownSyncApi.updateProperty(somePropertyKey, 'My new property!')
+      ).toThrow(
+        /invalid arguments/i
+      )
+    })
+
+    it('throws an error if key is not found', () => {
+      const onModelChange = jest.fn()
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
+
+      expect(
+        () => markdownSyncApi.updateProperty('hugo', someProperty)
+      ).toThrow(
+        /not available/i
+      )
+    })
   })
 
   describe('reset', () => {
     it('resets the model', () => {
       const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
+      const markdownSyncApi = getMarkdownSyncApi({ model, onModelChange })
 
-      markdownSyncApi.updateHeader('hugo')
+      markdownSyncApi.updateHeader({
+        placeholder: 'Dolly',
+        value: 'Hugo',
+      })
       markdownSyncApi.updateSection(someSectionKey, { content: 'hugo' })
       markdownSyncApi.updateProperty(somePropertyKey, { value: 'hugo' })
 
@@ -186,9 +250,10 @@ describe('utils/getMarkdownSyncApi', () => {
 
       expect(
         markdownSyncApi.header
-      ).toEqual(
-        'Your Business'
-      )
+      ).toEqual({
+        placeholder: 'Header',
+        value: 'Your Business',
+      })
       expect(
         markdownSyncApi.getProperty(somePropertyKey)
       ).toEqual(
@@ -198,18 +263,6 @@ describe('utils/getMarkdownSyncApi', () => {
         markdownSyncApi.getSection(someSectionKey)
       ).toEqual(
         someSection
-      )
-    })
-
-    it('updates header', () => {
-      const onModelChange = jest.fn()
-      const markdownSyncApi = getMarkdownSyncApi({ model, initialModel: model, onModelChange })
-      markdownSyncApi.updateHeader('My new head!')
-
-      expect(
-        markdownSyncApi.header
-      ).toEqual(
-        'My new head!'
       )
     })
   })
