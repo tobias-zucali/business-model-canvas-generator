@@ -64,19 +64,20 @@ function CanvasHeader({
       <HeaderContainer>
         <Header>
           <HeaderInput
-            aria-label="Header"
+            aria-label="Your Business"
             onChange={handleHeaderChange}
-            value={header}
+            placeholder="Your Business"
+            {...header}
           />
         </Header>
         <HeaderContainerRight>
           <PropertyInput
-            value={getProperty('date').value}
             onChange={handleDateChange}
+            {...getProperty('date')}
           />
           <PropertyInput
-            value={getProperty('name').value}
             onChange={handleNameChange}
+            {...getProperty('name')}
           />
         </HeaderContainerRight>
       </HeaderContainer>
