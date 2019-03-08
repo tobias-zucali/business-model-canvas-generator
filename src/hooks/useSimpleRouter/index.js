@@ -11,9 +11,7 @@ export const push = (url = '') => {
   window.location = `#${url}`
 }
 
-export default function useSimpleRouter({
-  routes,
-}) {
+export default function useSimpleRouter(routes) {
   const [url, setUrl] = useState(
     useMemo(getUrl, [])
   )

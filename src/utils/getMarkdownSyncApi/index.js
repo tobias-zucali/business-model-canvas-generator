@@ -9,6 +9,7 @@ import markdownToModel from './markdownToModel'
 
 const storeLocal = debounce((model) => {
   localStorage.setItem(model.localStorageKey, modelToMarkdown(model))
+  localStorage.setItem('isInited', 'true')
 }, 250)
 
 

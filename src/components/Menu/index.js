@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import useFullscreen from 'hooks/useFullscreen'
+import { push } from 'hooks/useSimpleRouter'
 
 
 const Container = styled.div`
@@ -41,7 +42,7 @@ const MenuButton = styled.button`
     outline: none;
   }
   &:last-child {
-    margin-right: -1em;
+    margin-right: -0.5em;
   }
   &:not(:last-child)::after {
     background: currentColor;
@@ -68,6 +69,9 @@ function Menu({
       onReset()
     }
   }, [onReset])
+  const handleHelp = useCallback(() => {
+    push('/')
+  }, [])
 
   const {
     isFullscreen,
@@ -113,12 +117,18 @@ function Menu({
       <MenuButton
         onClick={handleReset}
       >
-        Reset
+        Create new canvas
       </MenuButton>
       <MenuButton
         onClick={window.print}
       >
         Print
+      </MenuButton>
+      <MenuButton
+        aria-label="Help"
+        onClick={handleHelp}
+      >
+        ?
       </MenuButton>
     </Container>
   )

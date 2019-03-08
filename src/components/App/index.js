@@ -1,7 +1,9 @@
 import React from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
+import useSimpleRouter from 'hooks/useSimpleRouter'
 import BusinessModelCanvas from 'components/BusinessModelCanvas'
+import WelcomePage from 'components/WelcomePage'
 
 import theme from './theme'
 
@@ -20,14 +22,28 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
+const routes = [
+  {
+    url: '/canvas',
+    Component: BusinessModelCanvas,
+  },
+  {
+    Component: WelcomePage,
+  },
+]
+
 function App() {
+  const {
+    Component,
+  } = useSimpleRouter(routes).route
+
   return (
     <ThemeProvider
       theme={theme}
     >
       <React.Fragment>
         <GlobalStyle />
-        <BusinessModelCanvas />
+        <Component />
       </React.Fragment>
     </ThemeProvider>
   )
