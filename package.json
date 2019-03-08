@@ -1,6 +1,6 @@
 {
   "name": "business-model-canvas-generator",
-  "homepage": "https://tobias-zucali.github.io/business-model-canvas",
+  "homepage": "https://tobias-zucali.github.io/business-model-canvas-generator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,7 +20,7 @@
   "devDependencies": {
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-react-hooks": "^0.0.0",
-    "react-scripts-tz": "2.1.5-tz5"
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "predeploy": "npm run build",
