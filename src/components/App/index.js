@@ -3,10 +3,12 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import BusinessModelCanvas from 'components/BusinessModelCanvas'
 
+import theme from './theme'
+
 
 const GlobalStyle = createGlobalStyle`
   BODY {
-    background-color: ${({ theme }) => theme.pageBackground};
+    background-color: ${(props) => props.theme.pageBackground};
     font-size: 14px;
 
     @media (min-width: 1600px) {
@@ -21,10 +23,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <ThemeProvider
-      theme={{
-        pageBackground: '#EEEEEE',
-        paperBackground: '#FFFFFF',
-      }}
+      theme={theme}
     >
       <React.Fragment>
         <GlobalStyle />
