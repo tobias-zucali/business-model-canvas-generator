@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/business-model-canvas/precache-manifest.e530a062c713920f48e2d0beca326e9b.js"
+  "/business-model-canvas-generator/precache-manifest.e081ba0eeaa3559eafe1d413d9c8b54d.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/business-model-canvas/index.html", {
+workbox.routing.registerNavigationRoute("/business-model-canvas-generator/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
