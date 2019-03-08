@@ -14,7 +14,7 @@ const AreaBorderBase = styled.div`
   }
 `
 
-const BORDER_GAP = '0.5em'
+const BORDER_GAP = '0.75em'
 const AreaBorderTop = styled(AreaBorderBase)`
   border-top-style: solid;
   left: ${BORDER_GAP};

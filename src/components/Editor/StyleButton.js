@@ -54,7 +54,7 @@ function StyleButton({
 }
 
 StyleButton.propTypes = {
-  Icon: PropTypes.func.isRequired,
+  Icon: PropTypes.any.isRequired, // TODO: validate react component
   isActive: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   onToggle: PropTypes.func.isRequired,

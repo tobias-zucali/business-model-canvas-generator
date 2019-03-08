@@ -2,13 +2,13 @@ import React, { useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import useFullscreen from 'hooks/useFullscreen'
+
 
 const Container = styled.div`
-  padding: 0.5em 0.5em 0 0.5em;
-
-  & > button {
-    margin-right: 0.25em;
-  }
+  background-color: ${(props) => props.theme.pageBackground};
+  padding: 0 0.5em;
+  text-align: right;
 
   @media print {
     display: none;
@@ -23,6 +23,35 @@ const HiddenForm = styled.form`
   width: 1px;
   height: 1px;
   overflow: hidden;
+`
+const MenuButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height: inherit;
+  margin-top: -0.5em;
+  margin-right: 1px;
+  padding: 0.5em 1em;
+  position: relative;
+  text-transform: uppercase;
+
+  &:hover,
+  &:focus {
+    background: #DDDDDD;
+    outline: none;
+  }
+  &:last-child {
+    margin-right: -1em;
+  }
+  &:not(:last-child)::after {
+    background: currentColor;
+    bottom: 0.6em;
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 0.6em;
+    width: 1px;
+  }
 `
 
 function Menu({
@@ -39,46 +68,58 @@ function Menu({
       onReset()
     }
   }, [onReset])
+
+  const {
+    isFullscreen,
+    toggleFullscreen,
+  } = useFullscreen()
+
   return (
     <Container
       {...otherProps}
     >
-      <button
+      <MenuButton
+        onClick={toggleFullscreen}
+      >
+        {isFullscreen ? 'Exit full screen' : 'full screen'}
+      </MenuButton>
+      <MenuButton
         onClick={onSaveAs}
       >
         Save to file
-      </button>
-      <button
+      </MenuButton>
+      <MenuButton
         onClick={() => importInputRef.current.click()}
       >
         Import from file
-      </button>
-      <HiddenForm
-        ref={importFormRef}
-      >
-        <input
-          accept="text/plain, text/markdown"
-          aria-hidden={true}
-          type="file"
-          onChange={({ target }) => {
-            loadFromFile(target.files[0])
+        <HiddenForm
+          ref={importFormRef}
+        >
+          <input
+            accept="text/plain, text/markdown"
+            aria-hidden={true}
+            tabIndex="-1"
+            type="file"
+            onChange={({ target }) => {
+              loadFromFile(target.files[0])
 
-            // clear value to allow to import from same path again
-            importFormRef.current.reset()
-          }}
-          ref={importInputRef}
-        />
-      </HiddenForm>
-      <button
+              // clear value to allow to import from same path again
+              importFormRef.current.reset()
+            }}
+            ref={importInputRef}
+          />
+        </HiddenForm>
+      </MenuButton>
+      <MenuButton
         onClick={handleReset}
       >
         Reset
-      </button>
-      <button
+      </MenuButton>
+      <MenuButton
         onClick={window.print}
       >
         Print
-      </button>
+      </MenuButton>
     </Container>
   )
 }

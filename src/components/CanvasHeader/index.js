@@ -10,7 +10,7 @@ const Container = styled.div`
   flex-direction: column;
 `
 const HeaderContainer = styled.div`
-  margin: 0.5rem 0.5rem 0 0.5rem;
+  margin: 0.75em 0.75em 0 0.75em;
   display: flex;
 `
 const Header = styled.h1`
