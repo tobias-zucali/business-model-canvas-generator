@@ -92,7 +92,10 @@ function CanvasHeader({
 CanvasHeader.propTypes = {
   getProperty: PropTypes.func.isRequired,
   gridArea: PropTypes.string,
-  header: PropTypes.string.isRequired,
+  header: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+  }).isRequired,
   onHeaderChange: PropTypes.func.isRequired,
   onPropertyChange: PropTypes.func.isRequired,
   sectionProps: PropTypes.object.isRequired,

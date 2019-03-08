@@ -1,9 +1,9 @@
-import getMarkdownSyncApi from '../getMarkdownSyncApi'
+import getMarkdownSyncApi from '../index'
 
 import { model } from './demoData'
 
 
-describe('utils/useMarkdownSync/getMarkdownSyncApi', () => {
+describe('utils/getMarkdownSyncApi', () => {
   const sectionKeys = [
     'purpose',
     'customer-segments',

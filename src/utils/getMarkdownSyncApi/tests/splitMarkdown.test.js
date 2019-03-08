@@ -3,7 +3,7 @@ import splitMarkdown, { findHeader, findProps, findSections, findPlaceholderText
 import { markdown } from './demoData'
 
 
-describe('utils/markdownSync/splitMarkdown', () => {
+describe('utils/getMarkdownSyncApi/splitMarkdown', () => {
   it('splits markdown', () => {
     expect(
       splitMarkdown(markdown)
@@ -87,6 +87,17 @@ describe('utils/markdownSync/splitMarkdown', () => {
     it('returns index -1 if no header is found', () => {
       expect(
         findHeader(['', ''])
+      ).toEqual(
+        {
+          header: '',
+          index: -1,
+        }
+      )
+    })
+
+    it('only finds first level headlines', () => {
+      expect(
+        findHeader(['## A second level header'])
       ).toEqual(
         {
           header: '',
@@ -267,13 +278,13 @@ __and so on__`,
       )
     })
 
-    it('ignores trailing text', () => {
+    it('finds multiline placeholder', () => {
       expect(
-        findPlaceholderText(['ignore me! [Hey there!] ignore me!'], 0)
+        findPlaceholderText(['[Hey there!', '  I wanted to tell you  ', '  this is the end]'], 0)
       ).toEqual(
         {
-          placeholder: 'Hey there!',
-          index: 0,
+          placeholder: 'Hey there!\nI wanted to tell you\nthis is the end',
+          index: 2,
         }
       )
     })

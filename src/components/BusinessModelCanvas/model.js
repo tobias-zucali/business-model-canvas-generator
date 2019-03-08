@@ -26,7 +26,7 @@ export default {
       content: '',
       header: 'Purpose',
       isHeader: true,
-      placeholder: 'Step 1:\nWhat is the business purpose? You need a clear vision to be able to validate the model.',
+      placeholder: 'Step 1:\nWhat is the business purpose?\nYou will need it to validate every single part of the model.',
     },
     {
       key: 'customer-segments',
@@ -35,7 +35,7 @@ export default {
       },
       content: '',
       header: 'Customer Segments',
-      placeholder: 'Step 2:\nTo build an effective business model, a company must identify which customers it tries to serve.',
+      placeholder: 'Step 2:\nWhich customers does your business try to serve?',
     },
     {
       key: 'value-propositions',
@@ -45,7 +45,7 @@ export default {
       },
       content: '',
       header: 'Value Propositions',
-      placeholder: 'Step 3:\nThe collection of products and services a business offers to meet the needs of its customers.',
+      placeholder: 'Step 3:\nWhich products and services a business offers meet the needs of the customer segments?',
     },
     {
       key: 'channels',
@@ -54,14 +54,14 @@ export default {
       },
       content: '',
       header: 'Channels',
-      placeholder: 'Step 4:\nA company can deliver its value proposition to its targeted customers through different channels.',
+      placeholder: 'Step 4:\nWhich channels does your business use to deliver the value proposition to the customer segments',
     },
     {
       key: 'customer-relationships',
       border: { },
       content: '',
       header: 'Customer Relationships',
-      placeholder: 'Step 5:\nTo ensure the survival and success of any businesses, companies must identify the type of relationship they want to create with their customer segments.',
+      placeholder: 'Step 5:\nWhich type relationship does your business want to create with the customer segments',
     },
     {
       key: 'revenue-streams',
@@ -70,7 +70,7 @@ export default {
       },
       content: '',
       header: 'Revenue Streams',
-      placeholder: 'Step 6:\nThe way a company makes income from each customer segment.',
+      placeholder: 'Step 6:\nHow does your company make income from each customer segment?',
     },
     {
       key: 'key-resources',
@@ -79,14 +79,14 @@ export default {
       },
       content: '',
       header: 'Key Resources',
-      placeholder: 'Step 7:\nThe resources that are necessary to create value for the customer.',
+      placeholder: 'Step 7:\nWhich resources are necessary to create the value propositions?',
     },
     {
       key: 'key-activities',
       border: { },
       content: '',
       header: 'Key Activities',
-      placeholder: 'Step 8:\nThe most important activities in executing a company\'s value proposition.',
+      placeholder: 'Step 8:\nWhat are the most important activities in executing the value propositions?',
     },
     {
       key: 'key-partners',
@@ -95,7 +95,7 @@ export default {
       },
       content: '',
       header: 'Key Partners',
-      placeholder: 'Step 9:\nIn order to optimise operations and reduce risks of a business model, organisations usually cultivate buyer-supplier relationships so they can focus on their core activity.',
+      placeholder: 'Step 9:\nWhich buyer-supplier relationships can help you to focus on your core activity, optimise operations and reduce risks?',
     },
     {
       key: 'cost-structure',
@@ -105,7 +105,7 @@ export default {
       },
       content: '',
       header: 'Cost Structure',
-      placeholder: 'Step 10:\nThis describes the most important monetary consequences while operating under different business models.',
+      placeholder: 'Step 10:\nWhat are the most important monetary consequences while operating under this business model?',
     },
   ],
 }

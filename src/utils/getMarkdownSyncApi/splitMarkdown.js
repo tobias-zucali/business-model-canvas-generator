@@ -4,6 +4,8 @@ const anyHeaderRegex = /^\s*#(.*)$/
 const propertyRegex = /^\s*(\S+)\s*:(.*)$/
 const sectionHeaderRegex = /^\s*##([^{]*){([^}]*)}(.*)$/
 const placeholderRegex = /\[(.*)\S*\]/
+const placeholderStartRegex = /\s*\[(.*)/
+const placeholderEndRegex = /^\s*([^\]]*)]/
 
 
 export default function splitMarkdown(content) {
@@ -121,27 +123,46 @@ export function findSections(lines, startIndex) {
 
 export function findPlaceholderText(lines, startIndex) {
   let currentIndex = startIndex
-  const sections = {}
+  const placeholderLines = []
 
   while (currentIndex < lines.length) {
-    const currentLine = lines[currentIndex]
-    const placeholderMatch = currentLine.match(placeholderRegex)
+    const currentLine = lines[currentIndex].trim()
 
-    if (placeholderMatch) {
-      const [/* fullMatch */, placeholder] = placeholderMatch
-      return {
-        placeholder: placeholder.trim(),
-        index: currentIndex,
+    if (placeholderLines.length === 0) {
+      const placeholderMatch = currentLine.match(placeholderRegex)
+      if (placeholderMatch) {
+        const [/* fullMatch */, placeholder] = placeholderMatch
+        return {
+          placeholder: placeholder.trim(),
+          index: currentIndex,
+        }
+      } else {
+        const placeholderStartMatch = currentLine.match(placeholderStartRegex)
+        if (placeholderStartMatch) {
+          const [/* fullMatch */, placeholder] = placeholderStartMatch
+          placeholderLines.push(placeholder.trim())
+        } else if (currentLine !== '') {
+          break
+        }
       }
-    } else if (currentLine.trim() !== '') {
-      return {
-        placeholder: '',
-        index: -1,
+    } else if (placeholderLines.length > 0) {
+      const placeholderEndMatch = currentLine.match(placeholderEndRegex)
+
+      if (placeholderEndMatch) {
+        const [/* fullMatch */, placeholder] = placeholderEndMatch
+        placeholderLines.push(placeholder.trim())
+        return {
+          placeholder: placeholderLines.join('\n'),
+          index: currentIndex,
+        }
+      } else {
+        placeholderLines.push(currentLine)
       }
     }
     currentIndex += 1
   }
   return {
-    sections,
+    placeholder: '',
+    index: -1,
   }
 }
