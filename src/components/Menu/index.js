@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import environment from 'utils/environment'
+import { platform, mode } from 'utils/environment'
 import useFullscreen from 'hooks/useFullscreen'
 import { push } from 'hooks/useSimpleRouter'
 
@@ -95,10 +95,10 @@ function Menu({
     <Container
       {...otherProps}
     >
-      {(environment.isIos && !environment.getIsStandaloneMode()) && (
+      {(platform.isIos && !mode.isStandalone) && (
         <Notice>Install this webapp: Tap share button and &#34;Add to Home Screen&#34;</Notice>
       )}
-      {(!environment.isIos && isFullscreenSupported) && (
+      {(!platform.isIos && isFullscreenSupported) && (
         <MenuButton
           onClick={toggleFullscreen}
         >
