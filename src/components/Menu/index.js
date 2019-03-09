@@ -2,10 +2,30 @@ import React, { useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import environment from 'utils/environment'
 import useFullscreen from 'hooks/useFullscreen'
 import { push } from 'hooks/useSimpleRouter'
 
 
+const itemStyles = `
+  margin-top: -0.5em;
+  margin-right: 1px;
+  padding: 0.5em 1em;
+  position: relative;
+  &:last-child {
+    margin-right: -0.5em;
+  }
+
+  &:not(:last-child)::after {
+    background: currentColor;
+    bottom: 0.6em;
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 0.6em;
+    width: 1px;
+  }
+`
 const Container = styled.div`
   background-color: ${(props) => props.theme.pageBackground};
   padding: 0 0.5em;
@@ -30,10 +50,6 @@ const MenuButton = styled.button`
   border: none;
   cursor: pointer;
   line-height: inherit;
-  margin-top: -0.5em;
-  margin-right: 1px;
-  padding: 0.5em 1em;
-  position: relative;
   text-transform: uppercase;
 
   &:hover,
@@ -41,18 +57,14 @@ const MenuButton = styled.button`
     background: #DDDDDD;
     outline: none;
   }
-  &:last-child {
-    margin-right: -0.5em;
-  }
-  &:not(:last-child)::after {
-    background: currentColor;
-    bottom: 0.6em;
-    content: '';
-    position: absolute;
-    right: -1px;
-    top: 0.6em;
-    width: 1px;
-  }
+
+  ${itemStyles}
+`
+const Notice = styled.span`
+  color: #999999;
+  display: inline-block;
+
+  ${itemStyles}
 `
 
 function Menu({
@@ -75,6 +87,7 @@ function Menu({
 
   const {
     isFullscreen,
+    isFullscreenSupported,
     toggleFullscreen,
   } = useFullscreen()
 
@@ -82,11 +95,16 @@ function Menu({
     <Container
       {...otherProps}
     >
-      <MenuButton
-        onClick={toggleFullscreen}
-      >
-        {isFullscreen ? 'Exit full screen' : 'full screen'}
-      </MenuButton>
+      {(environment.isIos && !environment.getIsStandaloneMode()) && (
+        <Notice>Install this webapp: Tap share button and &#34;Add to Home Screen&#34;</Notice>
+      )}
+      {(!environment.isIos && isFullscreenSupported) && (
+        <MenuButton
+          onClick={toggleFullscreen}
+        >
+          {isFullscreen ? 'Exit full screen' : 'full screen'}
+        </MenuButton>
+      )}
       <MenuButton
         onClick={onSaveAs}
       >
