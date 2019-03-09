@@ -30,6 +30,7 @@ const Button = styled.button`
 `
 const Signature = styled.p`
   font-family: 'Montserrat', sans-serif;
+  font-size: 1.2em;
   margin-bottom: 2em;
 `
 

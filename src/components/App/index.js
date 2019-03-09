@@ -1,8 +1,10 @@
 import React from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { supports } from 'utils/environment'
 
 import useSimpleRouter from 'hooks/useSimpleRouter'
-import BusinessModelCanvas from 'components/BusinessModelCanvas'
+import LoadingPage from 'components/LoadingPage'
+import NotSupportedPage from 'components/NotSupportedPage'
 import WelcomePage from 'components/WelcomePage'
 
 import theme from './theme'
@@ -25,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
 const routes = [
   {
     url: '/canvas',
-    Component: BusinessModelCanvas,
+    Component: React.lazy(() => import('components/BusinessModelCanvas')),
   },
   {
     Component: WelcomePage,
@@ -43,7 +45,15 @@ function App() {
     >
       <React.Fragment>
         <GlobalStyle />
-        <Component />
+        {(supports.cssGrid && supports.fileReader && supports.promise) ? (
+          <React.Suspense
+            fallback={<LoadingPage />}
+          >
+            <Component />
+          </React.Suspense>
+        ) : (
+          <NotSupportedPage />
+        )}
       </React.Fragment>
     </ThemeProvider>
   )

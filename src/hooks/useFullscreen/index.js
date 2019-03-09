@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
+import { supports } from 'utils/environment'
 
 
-const isFullscreenSupported = Boolean(
-  document.documentElement.requestFullscreen
-  || document.documentElement.mozRequestFullScreen
-  || document.documentElement.webkitRequestFullscreen
-)
 const requestFullscreen = (element = document.documentElement) => {
   if (element.requestFullscreen) {
     element.requestFullscreen()
@@ -48,7 +44,7 @@ export default function useFullscreen() {
 
   return {
     isFullscreen,
-    isFullscreenSupported,
+    isFullscreenSupported: supports.fullscreen,
     toggleFullscreen,
   }
 }
