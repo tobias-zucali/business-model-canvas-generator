@@ -1,12 +1,35 @@
 import { useEffect, useState } from 'react'
 
 
-const getIsFullscreen = () => Boolean(document.fullscreenElement)
+const isFullscreenSupported = Boolean(
+  document.documentElement.requestFullscreen
+  || document.documentElement.mozRequestFullScreen
+  || document.documentElement.webkitRequestFullscreen
+)
+const requestFullscreen = (element = document.documentElement) => {
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen()
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT || {})
+  }
+}
+const exitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen()
+  } else if (document.mozExitFullscreen) {
+    document.mozExitFullscreen()
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen()
+  }
+}
+const getIsFullscreen = () => Boolean(document.fullscreenElement || document.webkitCurrentFullScreenElement)
 const toggleFullscreen = () => {
   if (!getIsFullscreen()) {
-    document.documentElement.requestFullscreen()
+    requestFullscreen()
   } else if (document.exitFullscreen) {
-    document.exitFullscreen()
+    exitFullscreen()
   }
 }
 
@@ -15,6 +38,8 @@ export default function useFullscreen() {
   useEffect(() => {
     const handleFullscreenChange = () => setIsFullscreen(getIsFullscreen())
     document.addEventListener('fullscreenchange', handleFullscreenChange)
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange)
 
     return function cleanup() {
       document.removeEventListener('fullscreenchange', handleFullscreenChange)
@@ -23,6 +48,7 @@ export default function useFullscreen() {
 
   return {
     isFullscreen,
+    isFullscreenSupported,
     toggleFullscreen,
   }
 }
