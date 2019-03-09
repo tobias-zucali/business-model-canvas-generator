@@ -20,7 +20,13 @@
   "devDependencies": {
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-react-hooks": "^0.0.0",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "@storybook/react": "^5.0.1",
+    "@storybook/addon-actions": "^5.0.1",
+    "@storybook/addon-links": "^5.0.1",
+    "@storybook/addons": "^5.0.1",
+    "@babel/core": "^7.3.4",
+    "babel-loader": "^8.0.5"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -33,7 +39,9 @@
     "lint:fix": "yarn lint:eslint:fix .",
     "lint": "yarn lint:eslint",
     "test": "react-scripts test",
-    "test:debug": "react-scripts --inspect-brk test --runInBand"
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
