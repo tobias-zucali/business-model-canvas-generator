@@ -1,13 +1,13 @@
 import React, { useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { Editor as DraftJsEditor, EditorState, RichUtils } from 'draft-js'
-import { stateFromMarkdown } from 'draft-js-import-markdown'
-import { stateToMarkdown } from 'draft-js-export-markdown'
+import { Editor as DraftJsEditor, RichUtils } from 'draft-js'
 import styled, { createGlobalStyle } from 'styled-components'
 import useIsFocusWithin from 'hooks/useIsFocusWithin'
 
+import Controls from './components/Controls'
+import sectionBlockRenderer from './sectionBlockRenderer'
+
 import 'draft-js/dist/Draft.css'
-import Controls from './Controls'
 
 
 const EditorContainer = styled.div`
@@ -24,6 +24,7 @@ const GlobalDraftJsEditorStyle = createGlobalStyle`
     }
   }
 `
+
 
 export function Editor({
   editorState,
@@ -61,6 +62,7 @@ export function Editor({
     >
       <GlobalDraftJsEditorStyle />
       <DraftJsEditor
+        blockRendererFn={sectionBlockRenderer}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
         onChange={handleChange}
@@ -84,17 +86,5 @@ Editor.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 }
-
-
-Editor.createEditorStateFromMarkdown = (md) => EditorState.createWithContent(
-  stateFromMarkdown(md)
-)
-Editor.updateEditorStateWithMarkdown = (editorState, md) => EditorState.push(
-  editorState,
-  stateFromMarkdown(md)
-)
-Editor.getMarkdownFromEditorState = (editorState) => stateToMarkdown(
-  editorState.getCurrentContent()
-)
 
 export default Editor

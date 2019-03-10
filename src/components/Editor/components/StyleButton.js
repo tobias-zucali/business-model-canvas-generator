@@ -3,11 +3,15 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 
-const StyledStyleButton = styled(StyleButton)`
-  color: ${({ isActive }) => isActive ? 'inherit' : '#999999'};
+const Button = styled.button`
+  background: ${({ 'aria-pressed': ariaPressed }) => ariaPressed ? '#DDDDDD' : 'transparent'};;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
-  fill: currentColor;
+  display: flex;
+  opacity: ${({ 'aria-pressed': ariaPressed }) => ariaPressed ? 1 : 0.5};
   padding: 0.25em;
+
   &:hover, &:focus {
     background: #DDDDDD;
   }
@@ -24,16 +28,17 @@ const StyledStyleButton = styled(StyleButton)`
 `
 
 function StyleButton({
-  Icon,
+  icon,
   isActive,
   label,
   onToggle,
   style,
+  data,
   ...otherProps
 }) {
   const handleClick = (event) => {
     event.preventDefault()
-    onToggle(style)
+    onToggle(style, data)
   }
   const handleKeyDown = (event) => {
     if (event.key === ' ' || event.key === 'Enter') {
@@ -41,20 +46,22 @@ function StyleButton({
     }
   }
   return (
-    <Icon
+    <Button
       aria-label={label}
       aria-pressed={isActive}
       onKeyDown={handleKeyDown}
       onMouseDown={handleClick}
-      role="button"
       tabIndex="0"
       {...otherProps}
-    />
+    >
+      {icon || label}
+    </Button>
   )
 }
 
 StyleButton.propTypes = {
-  Icon: PropTypes.any.isRequired, // TODO: validate react component
+  data: PropTypes.object,
+  icon: PropTypes.node,
   isActive: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   onToggle: PropTypes.func.isRequired,
@@ -62,4 +69,4 @@ StyleButton.propTypes = {
 }
 
 
-export default StyledStyleButton
+export default StyleButton

@@ -1,25 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { getSelectedBlock, hasBlockData, hasBlockType } from 'utils/editor'
 
 import StyleButton from './StyleButton'
 import ControlsGroup from './ControlsGroup'
-import { blockControlTypes } from './controlTypes'
+import { blockControlTypes } from '../controlTypes'
 
 
 function BlockStyleControls({
   editorState,
   onToggle,
 }) {
-  const selection = editorState.getSelection()
-  const blockType = editorState.getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType()
+  const selectedBlock = getSelectedBlock(editorState)
 
   return (
     <ControlsGroup>
       {blockControlTypes.map((controlType) => (
         <StyleButton
-          isActive={controlType.style === blockType}
+          isActive={
+            hasBlockType(selectedBlock, controlType.style)
+            && hasBlockData(selectedBlock, controlType.data || {})
+          }
           key={controlType.label}
           onToggle={onToggle}
           {...controlType}

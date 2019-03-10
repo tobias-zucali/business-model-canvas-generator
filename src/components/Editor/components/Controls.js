@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { RichUtils } from 'draft-js'
+import { toggleInlineStyle, toggleBlockType } from 'utils/editor'
 import styled from 'styled-components'
 
 import BlockStyleControls from './BlockStyleControls'
@@ -18,28 +18,22 @@ const ControlsContainer = styled.div`
   }
 `
 
+
 export function Controls({
   editorState,
   isVisible,
   onChange,
   ...otherProps
 }) {
-  const toggleInlineStyle = (inlineStyle) => {
-    onChange(
-      RichUtils.toggleInlineStyle(
-        editorState,
-        inlineStyle
-      )
-    )
-  }
-  const toggleBlockType = (blockType) => {
-    onChange(
-      RichUtils.toggleBlockType(
-        editorState,
-        blockType
-      )
-    )
-  }
+  const handleToggleInlineStyle = useCallback((inlineStyle) => {
+    const toggledEditorState = toggleInlineStyle(editorState, inlineStyle)
+    onChange(toggledEditorState)
+  }, [onChange, editorState])
+
+  const handleToggleBlockType = useCallback((blockType, data = {}) => {
+    const nextEditorState = toggleBlockType(editorState, blockType, data)
+    onChange(nextEditorState)
+  }, [onChange, editorState])
 
   return (
     <ControlsContainer
@@ -48,11 +42,11 @@ export function Controls({
     >
       <InlineStyleControls
         editorState={editorState}
-        onToggle={toggleInlineStyle}
+        onToggle={handleToggleInlineStyle}
       />
       <BlockStyleControls
         editorState={editorState}
-        onToggle={toggleBlockType}
+        onToggle={handleToggleBlockType}
       />
     </ControlsContainer>
   )

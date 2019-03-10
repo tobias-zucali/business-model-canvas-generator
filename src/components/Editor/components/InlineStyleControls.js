@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import StyleButton from './StyleButton'
 import ControlsGroup from './ControlsGroup'
-import { inlineControlTypes } from './controlTypes'
+import { inlineControlTypes } from '../controlTypes'
 
 
 function InlineStyleControls({
