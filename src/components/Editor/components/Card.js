@@ -10,7 +10,7 @@ const SectionElement = styled.section`
   padding: 0.5em;
 `
 
-function Section({
+function Card({
   blockProps,
   ...otherProps
 }) {
@@ -23,10 +23,10 @@ function Section({
   )
 }
 
-Section.propTypes = {
+Card.propTypes = {
   blockProps: PropTypes.shape({
     color: PropTypes.string,
   }).isRequired,
 }
 
-export default Section
+export default Card

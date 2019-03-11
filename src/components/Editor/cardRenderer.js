@@ -1,15 +1,11 @@
-import { mapToObject } from 'utils/object'
-
-import isEqual from 'lodash/isEqual'
-
-import Section from './components/Section'
+import Card from './components/Card'
 import { sectionControlTypes } from './controlTypes'
 
 
 /**
  * We highjack the github flavored markup style for code blocks with language data to display our colored cards.
  */
-export default function sectionBlockRenderer(contentBlock) {
+export default function cardRenderer(contentBlock) {
   const type = contentBlock.getType()
   if (type === 'code-block') {
     const blockData = contentBlock.getData()
@@ -20,7 +16,7 @@ export default function sectionBlockRenderer(contentBlock) {
     )
 
     return {
-      component: Section,
+      component: Card,
       editable: true,
       props: {
         color: currentControlType && currentControlType.color,

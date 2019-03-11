@@ -5,7 +5,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import useIsFocusWithin from 'hooks/useIsFocusWithin'
 
 import Controls from './components/Controls'
-import sectionBlockRenderer from './sectionBlockRenderer'
+import cardRenderer from './cardRenderer'
 
 import 'draft-js/dist/Draft.css'
 
@@ -62,7 +62,7 @@ export function Editor({
     >
       <GlobalDraftJsEditorStyle />
       <DraftJsEditor
-        blockRendererFn={sectionBlockRenderer}
+        blockRendererFn={cardRenderer}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
         onChange={handleChange}
