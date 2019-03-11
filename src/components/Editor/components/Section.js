@@ -10,28 +10,22 @@ const SectionElement = styled.section`
   padding: 0.5em;
 `
 
-function Section(props) {
-  const {
-    block,
-    blockProps: {
-      languageColorMap,
-    },
-  } = props
-  const data = block.getData()
-
+function Section({
+  blockProps,
+  ...otherProps
+}) {
   return (
     <SectionElement
-      color={languageColorMap[data.get('language')]}
+      color={blockProps.color}
     >
-      <EditorBlock {...props} />
+      <EditorBlock {...otherProps} />
     </SectionElement>
   )
 }
 
 Section.propTypes = {
-  block: PropTypes.object.isRequired,
   blockProps: PropTypes.shape({
-    languageColorMap: PropTypes.object.isRequired,
+    color: PropTypes.string,
   }).isRequired,
 }
 

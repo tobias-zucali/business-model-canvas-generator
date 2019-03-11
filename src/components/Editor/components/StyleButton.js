@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 
 const Button = styled.button`
+  color: ${({ color }) => color || 'inherit'};
   background: ${({ 'aria-pressed': ariaPressed }) => ariaPressed ? '#DDDDDD' : 'transparent'};;
   border: none;
   border-radius: 0;
@@ -28,17 +29,18 @@ const Button = styled.button`
 `
 
 function StyleButton({
+  color,
   icon,
   isActive,
   label,
   onToggle,
-  style,
+  type,
   data,
   ...otherProps
 }) {
   const handleClick = (event) => {
     event.preventDefault()
-    onToggle(style, data)
+    onToggle(type, data)
   }
   const handleKeyDown = (event) => {
     if (event.key === ' ' || event.key === 'Enter') {
@@ -49,6 +51,7 @@ function StyleButton({
     <Button
       aria-label={label}
       aria-pressed={isActive}
+      color={color}
       onKeyDown={handleKeyDown}
       onMouseDown={handleClick}
       tabIndex="0"
@@ -60,12 +63,13 @@ function StyleButton({
 }
 
 StyleButton.propTypes = {
+  color: PropTypes.string,
   data: PropTypes.object,
   icon: PropTypes.node,
   isActive: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   onToggle: PropTypes.func.isRequired,
-  style: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 }
 
 

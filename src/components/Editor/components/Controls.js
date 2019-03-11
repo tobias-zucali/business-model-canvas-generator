@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { toggleInlineStyle, toggleBlockType } from 'utils/editor'
+import { getSelectedBlock, hasBlockData, hasBlockType, toggleInlineStyle, toggleBlockType } from 'utils/editor'
 import styled from 'styled-components'
 
-import BlockStyleControls from './BlockStyleControls'
-import InlineStyleControls from './InlineStyleControls'
+import ControlsGroup from './ControlsGroup'
+import { inlineControlTypes, blockControlTypes, sectionControlTypes } from '../controlTypes'
 
 
 const ControlsContainer = styled.div`
@@ -25,27 +25,56 @@ export function Controls({
   onChange,
   ...otherProps
 }) {
-  const handleToggleInlineStyle = useCallback((inlineStyle) => {
-    const toggledEditorState = toggleInlineStyle(editorState, inlineStyle)
-    onChange(toggledEditorState)
-  }, [onChange, editorState])
+  const handleToggleInlineStyle = useCallback(
+    (inlineStyle) => {
+      const toggledEditorState = toggleInlineStyle(editorState, inlineStyle)
+      onChange(toggledEditorState)
+    },
+    [onChange, editorState]
+  )
 
-  const handleToggleBlockType = useCallback((blockType, data = {}) => {
-    const nextEditorState = toggleBlockType(editorState, blockType, data)
-    onChange(nextEditorState)
-  }, [onChange, editorState])
+  const handleToggleBlockType = useCallback(
+    (blockType, data = {}) => {
+      const nextEditorState = toggleBlockType(editorState, blockType, data)
+      onChange(nextEditorState)
+    },
+    [onChange, editorState]
+  )
+
+  const selectedBlock = getSelectedBlock(editorState)
+  const getIsActiveBlock = useCallback(
+    (controlType) => hasBlockType(selectedBlock, controlType.type)
+      && hasBlockData(selectedBlock, controlType.data || {}),
+    [selectedBlock]
+  )
+
+  const currentStyle = editorState.getCurrentInlineStyle()
+  const getIsActiveStyle = useCallback(
+    (controlType) => currentStyle.has(controlType.type),
+    [currentStyle]
+  )
 
   return (
     <ControlsContainer
       isVisible={isVisible}
       {...otherProps}
     >
-      <InlineStyleControls
+      <ControlsGroup
+        controlTypes={inlineControlTypes}
         editorState={editorState}
+        getIsActive={getIsActiveStyle}
         onToggle={handleToggleInlineStyle}
       />
-      <BlockStyleControls
+      <ControlsGroup
+        controlTypes={blockControlTypes}
         editorState={editorState}
+        getIsActive={getIsActiveBlock}
+        onToggle={handleToggleBlockType}
+      />
+      <ControlsGroup
+        controlTypes={sectionControlTypes}
+        editorState={editorState}
+        getIsActive={getIsActiveBlock}
         onToggle={handleToggleBlockType}
       />
     </ControlsContainer>
