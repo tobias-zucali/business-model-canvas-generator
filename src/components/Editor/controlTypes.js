@@ -1,55 +1,66 @@
+import React from 'react'
+
 import { ReactComponent as FormatBold } from 'icons/formatBold.svg'
 import { ReactComponent as FormatHeader } from 'icons/formatSize.svg'
 import { ReactComponent as FormatItalic } from 'icons/formatItalic.svg'
 import { ReactComponent as FormatListBulleted } from 'icons/formatListBulleted.svg'
 import { ReactComponent as FormatListNumbered } from 'icons/formatListNumbered.svg'
-import { ReactComponent as FormatQuote } from 'icons/formatQuote.svg'
 import { ReactComponent as FormatStrikethrough } from 'icons/formatStrikethrough.svg'
 import { ReactComponent as FormatUnderlined } from 'icons/formatUnderlined.svg'
+import { ReactComponent as Note } from 'icons/note.svg'
 
-
-export const blockControlTypes = [
-  {
-    label: 'Header',
-    style: 'header-three',
-    Icon: FormatHeader,
-  },
-  {
-    label: 'Blockquote',
-    style: 'blockquote',
-    Icon: FormatQuote,
-  },
-  {
-    label: 'UL',
-    style: 'unordered-list-item',
-    Icon: FormatListBulleted,
-  },
-  {
-    label: 'OL',
-    style: 'ordered-list-item',
-    Icon: FormatListNumbered,
-  },
-]
 
 export const inlineControlTypes = [
   {
     label: 'Bold',
-    style: 'BOLD',
-    Icon: FormatBold,
+    type: 'BOLD',
+    icon: <FormatBold />,
   },
   {
     label: 'Italic',
-    style: 'ITALIC',
-    Icon: FormatItalic,
+    type: 'ITALIC',
+    icon: <FormatItalic />,
   },
   {
     label: 'Underline',
-    style: 'UNDERLINE',
-    Icon: FormatUnderlined,
+    type: 'UNDERLINE',
+    icon: <FormatUnderlined />,
   },
   {
     label: 'Strikethrough',
-    style: 'STRIKETHROUGH',
-    Icon: FormatStrikethrough,
+    type: 'STRIKETHROUGH',
+    icon: <FormatStrikethrough />,
   },
 ]
+export const blockControlTypes = [
+  {
+    label: 'Header',
+    type: 'header-three',
+    icon: <FormatHeader />,
+  },
+  {
+    label: 'UL',
+    type: 'unordered-list-item',
+    icon: <FormatListBulleted />,
+  },
+  {
+    label: 'OL',
+    type: 'ordered-list-item',
+    icon: <FormatListNumbered />,
+  },
+]
+
+// we use the type 'code-block' and the 'language' data entry to be able to convert it to markdown syntax.
+export function getCardType({
+  color,
+  label,
+  key = label,
+}) {
+  return {
+    color,
+    data: { language: key },
+    icon: <Note />,
+    label,
+    type: 'code-block',
+  }
+}

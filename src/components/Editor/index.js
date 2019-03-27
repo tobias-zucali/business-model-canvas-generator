@@ -1,13 +1,14 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { Editor as DraftJsEditor, EditorState, RichUtils } from 'draft-js'
-import { stateFromMarkdown } from 'draft-js-import-markdown'
-import { stateToMarkdown } from 'draft-js-export-markdown'
+import { Editor as DraftJsEditor, RichUtils } from 'draft-js'
 import styled, { createGlobalStyle } from 'styled-components'
 import useIsFocusWithin from 'hooks/useIsFocusWithin'
+import { getCardType } from './controlTypes'
+
+import Controls from './components/Controls'
+import getCardRenderer from './getCardRenderer'
 
 import 'draft-js/dist/Draft.css'
-import Controls from './Controls'
 
 
 const EditorContainer = styled.div`
@@ -25,7 +26,9 @@ const GlobalDraftJsEditorStyle = createGlobalStyle`
   }
 `
 
+
 export function Editor({
+  cardStyles,
   editorState,
   isSimple,
   onChange,
@@ -35,6 +38,11 @@ export function Editor({
   const editorRef = useRef(null)
   const containerRef = useRef(null)
   const isFocusWithin = useIsFocusWithin(containerRef)
+
+  const cardRenderer = useMemo(
+    () => getCardRenderer(cardStyles),
+    [cardStyles]
+  )
 
   const handleChange = useCallback((nextEditorState) => {
     onChange(nextEditorState)
@@ -61,6 +69,7 @@ export function Editor({
     >
       <GlobalDraftJsEditorStyle />
       <DraftJsEditor
+        blockRendererFn={cardRenderer}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
         onChange={handleChange}
@@ -69,6 +78,7 @@ export function Editor({
       />
       {!isSimple && (
         <Controls
+          cardControlTypes={cardStyles && cardStyles.map(getCardType)}
           editorState={editorState}
           isVisible={isFocusWithin}
           onChange={handleChange}
@@ -79,22 +89,38 @@ export function Editor({
 }
 
 Editor.propTypes = {
+  cardStyles: PropTypes.arrayOf(PropTypes.shape({
+    color: PropTypes.string,
+    key: PropTypes.string,
+    label: PropTypes.string.isRequired,
+  })),
   editorState: PropTypes.object.isRequired,
   isSimple: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 }
-
-
-Editor.createEditorStateFromMarkdown = (md) => EditorState.createWithContent(
-  stateFromMarkdown(md)
-)
-Editor.updateEditorStateWithMarkdown = (editorState, md) => EditorState.push(
-  editorState,
-  stateFromMarkdown(md)
-)
-Editor.getMarkdownFromEditorState = (editorState) => stateToMarkdown(
-  editorState.getCurrentContent()
-)
+Editor.defaultProps = {
+  cardStyles: [
+    {
+      label: 'Card',
+      data: {},
+    },
+    {
+      label: 'Card OK',
+      color: 'green',
+      key: 'ok',
+    },
+    {
+      label: 'Card Warn',
+      color: 'orange',
+      key: 'warn',
+    },
+    {
+      label: 'Card Not OK',
+      color: 'red',
+      key: 'not ok',
+    },
+  ],
+}
 
 export default Editor

@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react'
 import useMarkdownSync from 'hooks/useMarkdownSync'
 import styled from 'styled-components'
 import { mapObject } from 'utils/object'
+import { createEditorStateFromMarkdown, updateEditorStateWithMarkdown } from 'utils/editor'
 
-import Editor from 'components/Editor'
 import Menu from 'components/Menu'
 import CanvasHeader from 'components/CanvasHeader'
 import CanvasArea from 'components/CanvasArea'
@@ -51,7 +51,7 @@ const StyledMenu = styled(Menu)`
 const getInitialEditorStates = (sections) => sections.reduce(
   (acc, section) => ({
     ...acc,
-    [section.key]: Editor.createEditorStateFromMarkdown(section.content),
+    [section.key]: createEditorStateFromMarkdown(section.content),
   }),
   {}
 )
@@ -75,7 +75,7 @@ function BusinessModelCanvas() {
   }
 
   const updateEditorStates = () => {
-    const nextEditorStates = mapObject(editorStates, (key, editorState) => Editor.updateEditorStateWithMarkdown(
+    const nextEditorStates = mapObject(editorStates, (key, editorState) => updateEditorStateWithMarkdown(
       editorState,
       markdownSyncApi.getSection(key).content,
     ))

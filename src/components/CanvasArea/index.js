@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { getMarkdownFromEditorState } from 'utils/editor'
 
 import AreaBorder from 'components/AreaBorder'
 import Editor from 'components/Editor'
@@ -51,7 +52,7 @@ function CanvasArea({
         isSimple={isSimple}
         onChange={(nextEditorState) => {
           onChange({
-            content: Editor.getMarkdownFromEditorState(nextEditorState),
+            content: getMarkdownFromEditorState(nextEditorState),
             editorState: nextEditorState,
           })
         }}
