@@ -1,28 +1,28 @@
+import memoize from 'lodash/memoize'
+
 import Card from './components/Card'
-import { sectionControlTypes } from './controlTypes'
 
 
 /**
  * We highjack the github flavored markup style for code blocks with language data to display our colored cards.
  */
-export default function cardRenderer(contentBlock) {
+export default memoize((cardStyles) => (contentBlock) => {
   const type = contentBlock.getType()
   if (type === 'code-block') {
     const blockData = contentBlock.getData()
 
-    const currentControlType = sectionControlTypes.find(
-      (controlType) => controlType.type === 'code-block'
-        && blockData.get('language') === (controlType.data && controlType.data.language)
+    const currentCardStyle = cardStyles.find(
+      (cardStyle) => blockData.get('language') === cardStyle.key
     )
 
     return {
       component: Card,
       editable: true,
       props: {
-        color: currentControlType && currentControlType.color,
+        color: currentCardStyle && currentCardStyle.color,
       },
     }
   } else {
     return null
   }
-}
+})

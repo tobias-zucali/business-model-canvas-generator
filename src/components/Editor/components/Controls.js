@@ -4,7 +4,7 @@ import { getSelectedBlock, hasBlockData, hasBlockType, toggleInlineStyle, toggle
 import styled from 'styled-components'
 
 import ControlsGroup from './ControlsGroup'
-import { inlineControlTypes, blockControlTypes, sectionControlTypes } from '../controlTypes'
+import { inlineControlTypes, blockControlTypes } from '../controlTypes'
 
 
 const ControlsContainer = styled.div`
@@ -20,6 +20,7 @@ const ControlsContainer = styled.div`
 
 
 export function Controls({
+  cardControlTypes,
   editorState,
   isVisible,
   onChange,
@@ -71,17 +72,20 @@ export function Controls({
         getIsActive={getIsActiveBlock}
         onToggle={handleToggleBlockType}
       />
-      <ControlsGroup
-        controlTypes={sectionControlTypes}
-        editorState={editorState}
-        getIsActive={getIsActiveBlock}
-        onToggle={handleToggleBlockType}
-      />
+      {cardControlTypes.length > 0 && (
+        <ControlsGroup
+          controlTypes={cardControlTypes}
+          editorState={editorState}
+          getIsActive={getIsActiveBlock}
+          onToggle={handleToggleBlockType}
+        />
+      )}
     </ControlsContainer>
   )
 }
 
 Controls.propTypes = {
+  cardControlTypes: PropTypes.array,
   editorState: PropTypes.object.isRequired,
   isVisible: PropTypes.bool,
   onChange: PropTypes.func.isRequired,

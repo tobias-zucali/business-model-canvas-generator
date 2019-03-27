@@ -51,32 +51,16 @@ export const blockControlTypes = [
 ]
 
 // we use the type 'code-block' and the 'language' data entry to be able to convert it to markdown syntax.
-export const sectionControlTypes = [
-  {
-    label: 'Card',
-    type: 'code-block',
-    data: {},
+export function getCardType({
+  color,
+  label,
+  key = label,
+}) {
+  return {
+    color,
+    data: { language: key },
     icon: <Note />,
-  },
-  {
-    label: 'Card OK',
+    label,
     type: 'code-block',
-    color: 'green',
-    data: { language: 'ok' },
-    icon: <Note />,
-  },
-  {
-    label: 'Card Warn',
-    type: 'code-block',
-    color: 'orange',
-    data: { language: 'warn' },
-    icon: <Note />,
-  },
-  {
-    label: 'Card Not OK',
-    type: 'code-block',
-    color: 'red',
-    data: { language: 'not ok' },
-    icon: <Note />,
-  },
-]
+  }
+}
