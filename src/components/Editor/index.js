@@ -19,7 +19,9 @@ const GlobalDraftJsEditorStyle = createGlobalStyle`
   .DraftEditor-root {
     flex: 1;
   }
-  .public-DraftEditorPlaceholder-inner {
+  .public-DraftEditorPlaceholder-root {
+    max-height: 100%;
+    overflow: hidden;
     @media print {
       display: none;
     }
@@ -99,6 +101,7 @@ Editor.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 }
+
 Editor.defaultProps = {
   cardStyles: [
     {
