@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/business-model-canvas-generator/static/media/formatBold.8680cb7c.svg"
   },
   {
-    "revision": "a1b178edb4472ea61979",
+    "revision": "7b4b4f71fe33599701f8",
     "url": "/business-model-canvas-generator/static/css/main.5e6e1551.chunk.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "url": "/business-model-canvas-generator/static/js/4.fb580f38.chunk.js"
   },
   {
-    "revision": "a1b178edb4472ea61979",
-    "url": "/business-model-canvas-generator/static/js/main.c9237bca.chunk.js"
+    "revision": "7b4b4f71fe33599701f8",
+    "url": "/business-model-canvas-generator/static/js/main.d54db5ab.chunk.js"
   },
   {
     "revision": "e53198a5519022b4a5146fc88b1a7677",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/business-model-canvas-generator/static/css/2.8ae983c0.chunk.css"
   },
   {
-    "revision": "25e4ab288ec621221c666ecfec11f6af",
+    "revision": "013c8ab5c7af47bf35123c6c234dd630",
     "url": "/business-model-canvas-generator/index.html"
   }
 ];
