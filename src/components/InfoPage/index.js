@@ -14,7 +14,7 @@ const Box = styled.div`
   background-color: ${({ theme }) => theme.paperBackground};
   margin: 1em 1em 3em 1em;
   max-width: calc(100% - 2em);
-  padding: 1em;
+  padding: 3vw;
   width: 50em;
 `
 
