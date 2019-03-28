@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Editor as DraftJsEditor, RichUtils } from 'draft-js'
 import styled, { createGlobalStyle } from 'styled-components'
 import useIsFocusWithin from 'hooks/useIsFocusWithin'
+import { handleReturn as handleReturnUtil } from 'utils/editor'
 import { getCardType } from './controlTypes'
 
 import Controls from './components/Controls'
@@ -59,19 +60,21 @@ export function Editor({
     return 'not-handled'
   }, [onChange])
 
-  const handleReturn = useCallback((event) => {
-    if (event.shiftKey) {
-      onChange(RichUtils.insertSoftNewline(editorState))
-      return 'handled'
-    }
-    // TODO: preserve `language` if card is split
-    // https://github.com/facebook/draft-js/blob/master/src/component/handlers/edit/commands/keyCommandInsertNewline.js#L17-L23
-    return 'not-handled'
-  })
+  const handleReturn = useCallback(
+    (event, nextEditorState) => {
+      const newState = handleReturnUtil(event, nextEditorState)
+      if (newState) {
+        onChange(newState)
+        return 'handled'
+      }
+      return 'not-handled'
+    },
+    [onChange]
+  )
 
-  const handleEditorClick = () => {
+  const handleEditorClick = useCallback(() => {
     editorRef.current.focus()
-  }
+  }, [editorRef])
 
   return (
     <EditorContainer // eslint-disable-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events

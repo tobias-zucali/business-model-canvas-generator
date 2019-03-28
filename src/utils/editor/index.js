@@ -62,3 +62,27 @@ export const setBlockData = (editorState, data) => {
     'change-block-data'
   )
 }
+
+export const handleReturn = (event, editorState) => {
+  if (event.shiftKey) {
+    return RichUtils.insertSoftNewline(editorState)
+  } else {
+    // preserve language of code blocks
+    const selectedBlock = getSelectedBlock(editorState)
+    if (selectedBlock.getType() === 'code-block') {
+      const blockData = selectedBlock.getData()
+      const language = blockData.get('language')
+      if (language) {
+        const contentState = Modifier.splitBlock(
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
+        )
+        return setBlockData(
+          EditorState.push(editorState, contentState, 'split-block'),
+          { language }
+        )
+      }
+    }
+  }
+  return null
+}

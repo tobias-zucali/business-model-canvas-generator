@@ -7,8 +7,7 @@ import Card from './components/Card'
  * We highjack the github flavored markup style for code blocks with language data to display our colored cards.
  */
 export default memoize((cardStyles) => (contentBlock) => {
-  const type = contentBlock.getType()
-  if (type === 'code-block') {
+  if (contentBlock.getType() === 'code-block') {
     const blockData = contentBlock.getData()
 
     const currentCardStyle = cardStyles.find(
