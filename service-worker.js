@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/business-model-canvas-generator/precache-manifest.3a5c1528261f12a7d99ab0412bb14c28.js"
+  "/business-model-canvas-generator/precache-manifest.aa51f00f64d7e78953858b1ff3d805f0.js"
 );
 
 workbox.clientsClaim();
