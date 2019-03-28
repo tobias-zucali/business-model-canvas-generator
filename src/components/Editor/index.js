@@ -19,7 +19,9 @@ const GlobalDraftJsEditorStyle = createGlobalStyle`
   .DraftEditor-root {
     flex: 1;
   }
-  .public-DraftEditorPlaceholder-inner {
+  .public-DraftEditorPlaceholder-root {
+    max-height: 100%;
+    overflow: hidden;
     @media print {
       display: none;
     }
@@ -57,6 +59,16 @@ export function Editor({
     return 'not-handled'
   }, [onChange])
 
+  const handleReturn = useCallback((event) => {
+    if (event.shiftKey) {
+      onChange(RichUtils.insertSoftNewline(editorState))
+      return 'handled'
+    }
+    // TODO: preserve `language` if card is split
+    // https://github.com/facebook/draft-js/blob/master/src/component/handlers/edit/commands/keyCommandInsertNewline.js#L17-L23
+    return 'not-handled'
+  })
+
   const handleEditorClick = () => {
     editorRef.current.focus()
   }
@@ -72,6 +84,7 @@ export function Editor({
         blockRendererFn={cardRenderer}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
+        handleReturn={handleReturn}
         onChange={handleChange}
         placeholder={placeholder}
         ref={editorRef}
@@ -99,6 +112,7 @@ Editor.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 }
+
 Editor.defaultProps = {
   cardStyles: [
     {

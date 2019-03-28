@@ -10,7 +10,8 @@ import { inlineControlTypes, blockControlTypes } from '../controlTypes'
 const ControlsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  visibility: ${({ isVisible }) => isVisible ? 'visible' : 'hidden'};
+  height: ${({ isVisible }) => isVisible ? undefined : 0};
+  overflow: hidden;
   z-index: 2;
 
   @media print {
