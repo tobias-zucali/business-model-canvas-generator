@@ -67,7 +67,7 @@ export function Editor({
     // TODO: preserve `language` if card is split
     // https://github.com/facebook/draft-js/blob/master/src/component/handlers/edit/commands/keyCommandInsertNewline.js#L17-L23
     return 'not-handled'
-  })
+  }, [onChange, editorState])
 
   const handleEditorClick = () => {
     editorRef.current.focus()

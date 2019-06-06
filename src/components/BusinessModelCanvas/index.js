@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import useMarkdownSync from 'hooks/useMarkdownSync'
 import styled from 'styled-components'
 import { mapObject } from 'utils/object'
@@ -60,12 +60,9 @@ const getInitialEditorStates = (sections) => sections.reduce(
 function BusinessModelCanvas() {
   const markdownSyncApi = useMarkdownSync({ model })
 
-  const initialEditorStates = useMemo(
-    () => getInitialEditorStates(markdownSyncApi.sections),
-    []
+  const [editorStates, setEditorStates] = useState(
+    () => getInitialEditorStates(markdownSyncApi.sections)
   )
-
-  const [editorStates, setEditorStates] = useState(initialEditorStates)
   const setSectionEditorState = (key, editorState) => {
     const nextEditorStates = {
       ...editorStates,

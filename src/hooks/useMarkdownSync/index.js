@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import getMarkdownSyncApi from 'utils/getMarkdownSyncApi'
 
@@ -12,9 +12,8 @@ const getInitialMarkdownSyncApi = (model) => {
 export default function useMarkdownSync({
   model,
 }) {
-  const markdownSyncApi = useMemo(
-    () => getInitialMarkdownSyncApi(model),
-    []
+  const [markdownSyncApi/* , neverChangeIt */] = useState(
+    () => getInitialMarkdownSyncApi(model)
   )
   const [/* value */, triggerRenderCycle] = useState()
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function useMarkdownSync({
     return function cleanup() {
       markdownSyncApi.removeOnChange()
     }
-  })
+  }, [markdownSyncApi])
 
 
   return markdownSyncApi

@@ -55,7 +55,7 @@ export default function useIsFocusWithin(ref) {
     return function cleanup() {
       removeFromGlobalHandlers(ref)
     }
-  }, [])
+  }, [ref])
 
   return isFocusWithin
 }
